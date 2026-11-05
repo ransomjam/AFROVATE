@@ -294,11 +294,9 @@
   animation: buildingAscendScan 4.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
 }
 
-@media (min-width: 1024px) {
-  .hero-building-mask {
-    mask-image: linear-gradient(90deg, transparent 0%, transparent 12%, rgba(0, 0, 0, 0.35) 32%, rgba(0, 0, 0, 0.85) 62%, black 85%);
-    -webkit-mask-image: linear-gradient(90deg, transparent 0%, transparent 12%, rgba(0, 0, 0, 0.35) 32%, rgba(0, 0, 0, 0.85) 62%, black 85%);
-  }
+.hero-building-mask {
+  mask-image: linear-gradient(90deg, transparent 0%, transparent 10%, rgba(0, 0, 0, 0.35) 28%, rgba(0, 0, 0, 0.85) 58%, black 82%);
+  -webkit-mask-image: linear-gradient(90deg, transparent 0%, transparent 10%, rgba(0, 0, 0, 0.35) 28%, rgba(0, 0, 0, 0.85) 58%, black 82%);
 }
 
 /* Respect prefers-reduced-motion */

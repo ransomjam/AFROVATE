@@ -108,33 +108,24 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
           }}
         />
 
-        {/* Illuminated Glass Corporate Office Building (Right Side) — Completely Static & Feathered */}
+        {/* Illuminated Glass Corporate Office Building (Right Side) — Static, Feathered & Clear */}
         <div
           ref={buildingWrapRef}
-          className="hero-building-mask absolute top-0 right-0 bottom-0 w-full lg:w-[65%] xl:w-[60%] overflow-hidden opacity-45 sm:opacity-65 lg:opacity-85 pointer-events-none"
+          className="hero-building-mask absolute top-0 right-0 bottom-0 w-full lg:w-[65%] xl:w-[60%] overflow-hidden opacity-70 sm:opacity-80 lg:opacity-90 pointer-events-none"
         >
           <img
             src="/images/hero-corporate-tower.webp"
             alt="Afrovate architectural corporate building with glowing interior lights"
-            className="w-full h-full object-cover object-top lg:object-right-top select-none pointer-events-none"
+            className="w-full h-full object-cover object-right-top select-none pointer-events-none"
           />
         </div>
 
-        {/* Desktop Atmospheric Blend: Smooth, rich crimson-burgundy gradient bringing back the warmth */}
+        {/* Unified Atmospheric Blend (Mobile & Desktop): Smooth, rich crimson-burgundy gradient bringing back the warmth */}
         <div
-          className="hidden lg:block absolute inset-0 pointer-events-none"
+          className="absolute inset-0 pointer-events-none"
           style={{
             background:
-              'linear-gradient(90deg, #21191D 0%, rgba(33, 25, 29, 0.98) 28%, rgba(89, 10, 28, 0.72) 48%, rgba(143, 16, 40, 0.42) 68%, rgba(33, 25, 29, 0.18) 85%, rgba(33, 25, 29, 0.45) 100%)',
-          }}
-        />
-
-        {/* Mobile Atmospheric Blend: Seamless vertical gradient with rich burgundy glow */}
-        <div
-          className="lg:hidden absolute inset-0 pointer-events-none"
-          style={{
-            background:
-              'linear-gradient(180deg, rgba(33, 25, 29, 0.88) 0%, rgba(89, 10, 28, 0.55) 45%, rgba(55, 7, 20, 0.6) 75%, rgba(33, 25, 29, 0.9) 100%)',
+              'linear-gradient(90deg, #21191D 0%, rgba(33, 25, 29, 0.96) 24%, rgba(89, 10, 28, 0.7) 48%, rgba(143, 16, 40, 0.35) 70%, rgba(33, 25, 29, 0.12) 88%, rgba(33, 25, 29, 0.35) 100%)',
           }}
         />
 
