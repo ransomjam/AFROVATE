@@ -18,7 +18,7 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({
     if (!sectionRef.current || prefersReducedMotion()) return;
 
     const ctx = gsap.context(() => {
-      // Header entrance animation
+      // Header entrance animation (Animates whether user scrolls up or down)
       const headItems = headerRef.current?.querySelectorAll('.services-reveal-item');
       if (headItems) {
         gsap.fromTo(
@@ -32,13 +32,15 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({
             ease: 'power3.out',
             scrollTrigger: {
               trigger: headerRef.current,
-              start: 'top 80%',
+              start: 'top 85%',
+              end: 'bottom 15%',
+              toggleActions: 'play reverse play reverse',
             },
           }
         );
       }
 
-      // 4 Service Cards staggered reveal
+      // 4 Service Cards staggered reveal (Animates whether user scrolls up or down)
       const cards = cardsRef.current?.querySelectorAll('.service-exact-card');
       if (cards) {
         gsap.fromTo(
@@ -53,10 +55,25 @@ export const ServicesSection: React.FC<ServicesSectionProps> = ({
             ease: 'expo.out',
             scrollTrigger: {
               trigger: cardsRef.current,
-              start: 'top 80%',
+              start: 'top 85%',
+              end: 'bottom 15%',
+              toggleActions: 'play reverse play reverse',
             },
           }
         );
+
+        // Continuous parallax scrub in both directions
+        gsap.to(cards, {
+          yPercent: -6,
+          stagger: 0.03,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: cardsRef.current,
+            start: 'top bottom',
+            end: 'bottom top',
+            scrub: 0.5,
+          },
+        });
       }
     }, sectionRef);
 

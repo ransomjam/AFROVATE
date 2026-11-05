@@ -44,8 +44,9 @@ export function animateStaggerReveal(
       ease: 'power3.out',
       scrollTrigger: {
         trigger,
-        start: options?.start ?? 'top 82%',
-        toggleActions: 'play none none none',
+        start: options?.start ?? 'top 85%',
+        end: 'bottom 15%',
+        toggleActions: 'play reverse play reverse',
       },
     }
   );
@@ -86,7 +87,8 @@ export function animateMaskReveal(
       scrollTrigger: {
         trigger,
         start,
-        toggleActions: 'play none none none',
+        end: 'bottom 15%',
+        toggleActions: 'play reverse play reverse',
       },
     }
   );
