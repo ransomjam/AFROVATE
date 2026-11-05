@@ -649,15 +649,15 @@ export const VentureStudioSection: React.FC<VentureStudioSectionProps> = ({
                         key={stage.step}
                         className="relative flex flex-col items-center justify-end h-full"
                       >
-                        {/* Interactive Node Button with Shockwave Ripple on Hit */}
+                        {/* Interactive Node Button: Refined small yellow outline with soft glow on hit/active */}
                         <button
                           onClick={() => handleStageSelect(idx)}
-                          className={`w-10 h-10 rounded-full flex items-center justify-center font-mono font-extrabold text-xs transition-all duration-300 cursor-pointer shadow-lg z-20 ${
+                          className={`w-9 h-9 rounded-full flex items-center justify-center font-mono font-bold text-xs transition-all duration-300 cursor-pointer z-20 ${
                             isJustHit
-                              ? 'bg-[#F2B824] text-[#1a050d] ring-4 ring-[#F2B824]/50 scale-115 animate-node-hit shadow-[0_0_24px_#F2B824]'
+                              ? 'bg-[#1c0510] text-[#F2B824] border border-[#F2B824] shadow-[0_0_16px_rgba(242,184,36,0.9),0_0_26px_rgba(242,184,36,0.45)] scale-108'
                               : isActive
-                              ? 'bg-[#F2B824] text-[#1a050d] ring-4 ring-[#F2B824]/30 scale-110 shadow-[0_0_20px_#F2B824]'
-                              : 'bg-[#2a0512] text-[#FFFFFF] border-2 border-[#F2B824]/60 hover:border-[#F2B824] hover:scale-105'
+                              ? 'bg-[#1c0510] text-[#F2B824] border border-[#F2B824] shadow-[0_0_12px_rgba(242,184,36,0.7),0_0_20px_rgba(242,184,36,0.35)] scale-105'
+                              : 'bg-[#18040d] text-white/75 border border-[#F2B824]/45 hover:border-[#F2B824] hover:text-[#F2B824]'
                           }`}
                         >
                           {stage.step}
@@ -757,15 +757,15 @@ export const VentureStudioSection: React.FC<VentureStudioSectionProps> = ({
                     key={stage.step}
                     className="relative flex items-center group"
                   >
-                    {/* Number Node on the Vertical Track */}
+                    {/* Number Node on the Vertical Track: Refined small yellow outline with soft glow */}
                     <button
                       onClick={() => handleStageSelect(idx)}
-                      className={`absolute -left-12 sm:-left-16 w-10 sm:w-11 h-10 sm:h-11 rounded-full flex items-center justify-center font-mono font-extrabold text-xs transition-all duration-300 z-10 cursor-pointer ${
+                      className={`absolute -left-11 sm:-left-14 w-8 sm:w-9 h-8 sm:h-9 rounded-full flex items-center justify-center font-mono font-bold text-xs transition-all duration-300 z-10 cursor-pointer ${
                         isJustHit
-                          ? 'bg-[#F2B824] text-[#1a050d] ring-4 ring-[#F2B824]/50 scale-115 animate-node-hit shadow-[0_0_20px_#F2B824]'
+                          ? 'bg-[#1c0510] text-[#F2B824] border border-[#F2B824] shadow-[0_0_16px_rgba(242,184,36,0.9),0_0_26px_rgba(242,184,36,0.45)] scale-108'
                           : isActive
-                          ? 'bg-[#F2B824] text-[#1a050d] ring-4 ring-[#F2B824]/30 scale-110 shadow-[0_0_18px_#F2B824]'
-                          : 'bg-[#2a0512] text-[#FFFFFF] border-2 border-[#F2B824]/60'
+                          ? 'bg-[#1c0510] text-[#F2B824] border border-[#F2B824] shadow-[0_0_12px_rgba(242,184,36,0.7),0_0_20px_rgba(242,184,36,0.35)] scale-105'
+                          : 'bg-[#18040d] text-white/75 border border-[#F2B824]/45'
                       }`}
                     >
                       {stage.step}

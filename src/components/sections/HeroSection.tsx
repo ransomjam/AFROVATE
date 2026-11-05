@@ -46,31 +46,13 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
     const ctx = gsap.context(() => {
       const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
 
-      // Step 1: Animate background layer into view
+      // Step 1: Animate background layer into view (Pure opacity fade — zero movement)
       tl.fromTo(
         bgRef.current,
-        { opacity: 0, scale: 1.05 },
-        { opacity: 1, scale: 1, duration: 1.2, ease: 'power2.out' }
+        { opacity: 0 },
+        { opacity: 1, duration: 0.9, ease: 'power2.out' }
       )
-        // Step 2: "Growing up" architectural tower animation
-        .fromTo(
-          buildingWrapRef.current,
-          {
-            yPercent: 35,
-            scaleY: 0.78,
-            opacity: 0,
-            transformOrigin: 'bottom center',
-          },
-          {
-            yPercent: 0,
-            scaleY: 1,
-            opacity: 1,
-            duration: 1.8,
-            ease: 'power3.out',
-          },
-          '-=0.9'
-        )
-        // Step 3: Reveal 3-line headline in sequence
+        // Step 2: Reveal 3-line headline in sequence
         .fromTo(
           [
             headlineLine1Ref.current,
@@ -86,9 +68,9 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
             stagger: 0.14,
             ease: 'expo.out',
           },
-          '-=1.2'
+          '-=0.6'
         )
-        // Step 4: Bring in supporting text & CTAs
+        // Step 3: Bring in supporting text & CTAs
         .fromTo(
           copyRef.current,
           { opacity: 0, y: 22 },
@@ -101,19 +83,6 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
           { opacity: 1, y: 0, duration: 0.65 },
           '-=0.5'
         );
-
-      // Continuous towering & elevation parallax as user scrolls up or down
-      gsap.to(buildingWrapRef.current, {
-        yPercent: -14,
-        scale: 1.06,
-        ease: 'none',
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: 'top top',
-          end: 'bottom top',
-          scrub: 0.6,
-        },
-      });
     }, sectionRef);
 
     return () => ctx.revert();
@@ -135,46 +104,46 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
           className="absolute inset-0"
           style={{
             background:
-              'linear-gradient(115deg, #21191D 0%, #300612 35%, #4a0718 68%, #21191D 100%)',
+              'linear-gradient(115deg, #21191D 0%, #3d0817 30%, #590A1C 52%, #8F1028 72%, #21191D 100%)',
           }}
         />
 
-        {/* Illuminated Glass Corporate Office Building (Right Side) — Growing Up Animation */}
+        {/* Illuminated Glass Corporate Office Building (Right Side) — Completely Static & Feathered */}
         <div
           ref={buildingWrapRef}
-          className="absolute top-0 right-0 bottom-0 w-full lg:w-[62%] overflow-hidden opacity-60 lg:opacity-85"
-          style={{
-            maskImage:
-              'linear-gradient(90deg, transparent 0%, transparent 12%, rgba(0,0,0,0.5) 35%, rgba(0,0,0,1) 70%)',
-            WebkitMaskImage:
-              'linear-gradient(90deg, transparent 0%, transparent 12%, rgba(0,0,0,0.5) 35%, rgba(0,0,0,1) 70%)',
-          }}
+          className="hero-building-mask absolute top-0 right-0 bottom-0 w-full lg:w-[65%] xl:w-[60%] overflow-hidden opacity-45 sm:opacity-65 lg:opacity-85 pointer-events-none"
         >
           <img
-            src="/images/hero-mobile-building.webp"
+            src="/images/hero-corporate-tower.webp"
             alt="Afrovate architectural corporate building with glowing interior lights"
-            className="w-full h-full object-cover object-right-top photo-warm-grade"
+            className="w-full h-full object-cover object-top lg:object-right-top select-none pointer-events-none"
           />
-
-          {/* Upward Growing Horizon Laser Scanner across the building */}
-          <div className="absolute inset-x-0 h-24 bg-gradient-to-t from-transparent via-[#F2B824]/30 to-transparent pointer-events-none animate-building-scan" />
         </div>
 
-        {/* Smooth Atmospheric Overlays (Blending left text zone into dark burgundy) */}
+        {/* Desktop Atmospheric Blend: Smooth, rich crimson-burgundy gradient bringing back the warmth */}
         <div
-          className="absolute inset-0"
+          className="hidden lg:block absolute inset-0 pointer-events-none"
           style={{
             background:
-              'linear-gradient(90deg, #21191D 0%, rgba(33, 25, 29, 0.96) 38%, rgba(68, 7, 20, 0.65) 60%, rgba(33, 25, 29, 0.25) 85%, rgba(33, 25, 29, 0.5) 100%)',
+              'linear-gradient(90deg, #21191D 0%, rgba(33, 25, 29, 0.98) 28%, rgba(89, 10, 28, 0.72) 48%, rgba(143, 16, 40, 0.42) 68%, rgba(33, 25, 29, 0.18) 85%, rgba(33, 25, 29, 0.45) 100%)',
+          }}
+        />
+
+        {/* Mobile Atmospheric Blend: Seamless vertical gradient with rich burgundy glow */}
+        <div
+          className="lg:hidden absolute inset-0 pointer-events-none"
+          style={{
+            background:
+              'linear-gradient(180deg, rgba(33, 25, 29, 0.88) 0%, rgba(89, 10, 28, 0.55) 45%, rgba(55, 7, 20, 0.6) 75%, rgba(33, 25, 29, 0.9) 100%)',
           }}
         />
 
         {/* Smooth Top & Bottom Vertical Vignette */}
         <div
-          className="absolute inset-0"
+          className="absolute inset-0 pointer-events-none"
           style={{
             background:
-              'linear-gradient(180deg, rgba(33, 25, 29, 0.7) 0%, transparent 18%, transparent 78%, #21191D 100%)',
+              'linear-gradient(180deg, rgba(33, 25, 29, 0.7) 0%, transparent 18%, transparent 80%, #21191D 100%)',
           }}
         />
 

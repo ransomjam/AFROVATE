@@ -28,6 +28,17 @@ export interface ServiceItem {
   imageAlt: string;
 }
 
+export interface AboutDivisionItem {
+  number: string;
+  title: string;
+  headline: string;
+  description: string;
+  image: string;
+  imageAlt: string;
+  href: string;
+  topic: string;
+}
+
 export interface AdditionalCapability {
   id: string;
   code: string;
@@ -150,6 +161,10 @@ export const ABOUT_CONTENT = {
       headline: 'Co-Building Startups',
       description:
         'Turn your venture idea into an operational business with a committed partner contributing seed capital, software engineering, branding and go-to-market execution.',
+      image: '/images/team-collaboration.webp',
+      imageAlt: 'Afrovate team collaborating with founders on startup venture creation',
+      href: '#venture-studio',
+      topic: 'About Afrovate — Venture Building (Co-Building Startups)',
     },
     {
       number: '02',
@@ -157,6 +172,10 @@ export const ABOUT_CONTENT = {
       headline: 'Solutions for Organisations',
       description:
         'Access practical business consulting, custom software development, digital marketing campaigns and AI automation to resolve bottlenecks and drive growth.',
+      image: '/images/developer-work.webp',
+      imageAlt: 'Software engineering team and technical consultants building digital solutions',
+      href: '#services',
+      topic: 'About Afrovate — Technology & Services (Solutions for Organisations)',
     },
     {
       number: '03',
@@ -164,8 +183,12 @@ export const ABOUT_CONTENT = {
       headline: 'Long-Term Partnership',
       description:
         'Benefit from shared technical infrastructure, continuous product maintenance and strategic business development across the Afrovate ecosystem.',
+      image: '/images/apps-showcase.webp',
+      imageAlt: 'Afrovate portfolio ecosystem platforms and continuous technical maintenance',
+      href: '#ventures',
+      topic: 'About Afrovate — Portfolio Support (Long-Term Partnership)',
     },
-  ],
+  ] as AboutDivisionItem[],
   focusItems: [
     {
       label: 'Our Focus',
