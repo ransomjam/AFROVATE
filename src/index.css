@@ -1,0 +1,307 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --color-crimson: #8F1028;
+    --color-burgundy: #590A1C;
+    --color-gold: #F2B824;
+    --color-charcoal: #21191D;
+    --color-ivory: #F8F5EF;
+    --color-white: #FFFFFF;
+  }
+
+  html {
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    background-color: #21191D;
+    color: #F8F5EF;
+    scroll-behavior: auto; /* Controlled by Lenis & GSAP */
+  }
+
+  body {
+    overflow-x: hidden;
+    background-color: #21191D;
+    color: #F8F5EF;
+  }
+
+  /* Custom subtle scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #21191D;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #590A1C;
+    border-radius: 4px;
+    border: 1px solid rgba(242, 184, 36, 0.25);
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #8F1028;
+  }
+}
+
+/* Display typography helpers */
+.font-display {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  letter-spacing: -0.03em;
+}
+
+.font-syne {
+  font-family: 'Syne', 'Plus Jakarta Sans', sans-serif;
+  letter-spacing: -0.035em;
+}
+
+/* Brand Color Grading for photography to ensure zero purple or off-brand hues */
+.photo-warm-grade {
+  filter: sepia(0.14) saturate(1.12) contrast(1.04) hue-rotate(-6deg);
+}
+
+.photo-crimson-grade {
+  filter: sepia(0.22) saturate(1.25) contrast(1.08) hue-rotate(-14deg);
+}
+
+/* Architectural Parallelogram & Diagonal Mask Utilities (Desktop) */
+@media (min-width: 1024px) {
+  .skew-blade {
+    transform: skewX(-14deg);
+  }
+  .unskew-media {
+    transform: skewX(14deg) scale(1.22);
+  }
+  .skew-blade-soft {
+    transform: skewX(-10deg);
+  }
+  .unskew-media-soft {
+    transform: skewX(10deg) scale(1.16);
+  }
+}
+
+/* Clip path helpers for GSAP mask reveals */
+.clip-diagonal-card {
+  clip-path: polygon(8% 0%, 100% 0%, 92% 100%, 0% 100%);
+}
+
+/* Continuous Non-Stop Upward Wheel Rolling Animation */
+@keyframes continuousWheelRoll {
+  0% {
+    transform: translateY(0%);
+  }
+  100% {
+    transform: translateY(-50%);
+  }
+}
+
+/* Continuous Non-Stop Horizontal Scrolling (Right-to-Left) */
+@keyframes continuousHorizontalScroll {
+  0% {
+    transform: translate3d(0%, 0, 0);
+  }
+  100% {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+/* Continuous Non-Stop Horizontal Scrolling (Left-to-Right) */
+@keyframes continuousHorizontalScrollReverse {
+  0% {
+    transform: translate3d(-50%, 0, 0);
+  }
+  100% {
+    transform: translate3d(0%, 0, 0);
+  }
+}
+
+/* -------------------------------------------------------------
+   VENTURE STUDIO MOTION DESIGN KEYFRAMES & UTILITIES
+------------------------------------------------------------- */
+@keyframes floatAssetSlow {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-8px) rotate(1.2deg);
+  }
+}
+
+@keyframes floatAssetAlt {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-7px) rotate(-1.2deg);
+  }
+}
+
+@keyframes pedestalPulseGlow {
+  0%, 100% {
+    opacity: 0.5;
+    transform: scale(0.92);
+  }
+  50% {
+    opacity: 0.95;
+    transform: scale(1.14);
+  }
+}
+
+@keyframes cardShimmerPass {
+  0% {
+    transform: translateX(-160%) skewX(-25deg);
+    opacity: 0;
+  }
+  12% {
+    opacity: 0.7;
+  }
+  30% {
+    transform: translateX(220%) skewX(-25deg);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(220%) skewX(-25deg);
+    opacity: 0;
+  }
+}
+
+@keyframes laserShineTravel {
+  0% {
+    stroke-dashoffset: 1400;
+    opacity: 0.1;
+  }
+  10% {
+    opacity: 1;
+  }
+  85% {
+    opacity: 1;
+  }
+  100% {
+    stroke-dashoffset: 0;
+    opacity: 0.1;
+  }
+}
+
+@keyframes verticalBeamFall {
+  0% {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  15% {
+    opacity: 1;
+  }
+  85% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(450%);
+    opacity: 0;
+  }
+}
+
+@keyframes nodeGlowPulse {
+  0%, 100% {
+    box-shadow: 0 0 14px rgba(242, 184, 36, 0.45);
+  }
+  50% {
+    box-shadow: 0 0 28px rgba(242, 184, 36, 0.88), 0 0 45px rgba(255, 30, 90, 0.45);
+  }
+}
+
+@keyframes arrowPulseEnd {
+  0%, 100% {
+    transform: scale(1);
+    filter: drop-shadow(0 0 5px #F2B824);
+  }
+  50% {
+    transform: scale(1.22);
+    filter: drop-shadow(0 0 14px #F2B824) drop-shadow(0 0 22px #FF2A6D);
+  }
+}
+
+@keyframes flowDashVertical {
+  to {
+    stroke-dashoffset: -20;
+  }
+}
+
+@keyframes nodeRipple {
+  0% {
+    transform: scale(0.95);
+    box-shadow: 0 0 0 0 rgba(242, 184, 36, 0.9), 0 0 15px rgba(242, 184, 36, 0.8);
+  }
+  60% {
+    transform: scale(1.18);
+    box-shadow: 0 0 0 16px rgba(242, 184, 36, 0), 0 0 30px rgba(255, 30, 90, 0.5);
+  }
+  100% {
+    transform: scale(1.1);
+    box-shadow: 0 0 0 0 rgba(242, 184, 36, 0), 0 0 18px rgba(242, 184, 36, 0.6);
+  }
+}
+
+@keyframes buildingAscendScan {
+  0% {
+    top: 100%;
+    opacity: 0;
+  }
+  15% {
+    opacity: 0.95;
+  }
+  85% {
+    opacity: 0.8;
+  }
+  100% {
+    top: -12%;
+    opacity: 0;
+  }
+}
+
+.animate-float-slow {
+  animation: floatAssetSlow 4.5s ease-in-out infinite;
+}
+
+.animate-float-alt {
+  animation: floatAssetAlt 5s ease-in-out infinite;
+}
+
+.animate-pedestal-pulse {
+  animation: pedestalPulseGlow 3.6s ease-in-out infinite;
+}
+
+.animate-card-shimmer {
+  animation: cardShimmerPass 6s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+.animate-roadmap-beam {
+  stroke-dasharray: 130 1400;
+  animation: laserShineTravel 5.2s linear infinite;
+}
+
+.animate-vertical-laser {
+  animation: verticalBeamFall 5.2s cubic-bezier(0.25, 0.1, 0.25, 1) infinite;
+}
+
+.animate-node-pulse {
+  animation: nodeGlowPulse 2.8s ease-in-out infinite;
+}
+
+.animate-node-hit {
+  animation: nodeRipple 0.9s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.animate-arrow-end {
+  animation: arrowPulseEnd 2.4s ease-in-out infinite;
+}
+
+.animate-building-scan {
+  animation: buildingAscendScan 4.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+/* Respect prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
