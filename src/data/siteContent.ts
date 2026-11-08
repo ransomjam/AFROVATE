@@ -6,7 +6,7 @@ export interface VentureItem {
   category: string;
   description: string;
   highlights: string[];
-  deviceType: 'Laptop & Web Platform' | 'Mobile Security App' | 'Digital Learning Platform' | 'Tech Training & Ecosystem';
+  deviceType: string;
   cropImage: string;
   fullShowcaseImage: string;
   brandAccent: string;
@@ -14,6 +14,13 @@ export interface VentureItem {
   websiteUrl: string;
   websiteLabel: string;
   hotspotPosition: { left: string; top: string };
+  mockups: string[];
+  productColor: string;
+  gradientBackground: string;
+  glowColor: string;
+  badgeBg: string;
+  badgeText: string;
+  badgeBorder: string;
 }
 
 export interface ServiceItem {
@@ -403,31 +410,46 @@ export const SERVICES_CONTENT = {
 };
 
 export const VENTURES_CONTENT = {
-  eyebrow: 'OUR PORTFOLIO',
+  eyebrow: 'OUR VENTURES',
   headline: 'Products built for authentic needs.',
   supportingText:
-    'Explore businesses and products developed within the Afrovate ecosystem. Each addresses an authentic community need, developed in close collaboration with dedicated teams.',
+    'Explore independent digital products and platforms engineered within the Afrovate ecosystem.',
   ventures: [
     {
       id: 'afrodocs',
       index: '01',
       name: 'AfroDocs',
-      tagline: 'Document productivity and academic technology.',
-      category: 'Academic & Document Technology',
+      tagline: 'Academic document productivity workspace.',
+      category: 'Productivity',
       description:
-        'A specialised document productivity platform that helps students, researchers and professionals format, edit, structure and manage academic and institutional documents with precision.',
+        'All-in-one workspace to format, edit and structure academic documents with precision.',
       highlights: [
         'Automated academic formatting & structural styling',
         'Streamlined document editing & workspace management',
         'Built for students, researchers & academic institutions',
       ],
       deviceType: 'Laptop & Web Platform',
-      cropImage: '/images/venture-afrodocs.webp',
-      fullShowcaseImage: '/images/apps-showcase.webp',
-      brandAccent: '#8F1028',
+      cropImage: '/images/mockups/afrdoocs 4.png',
+      fullShowcaseImage: '/images/mockups/afrdoocs 4.png',
+      mockups: [
+        '/images/mockups/afrdoocs 4.png',
+        '/images/mockups/afrodocs 1.png',
+        '/images/mockups/afrodocs 2.png',
+        '/images/mockups/afrodocs 3.png',
+        '/images/mockups/afrodocs 5.png',
+        '/images/mockups/afrodocs 7.png',
+        '/images/mockups/afrodocs 8.png',
+      ],
+      brandAccent: '#2563EB',
+      productColor: 'Blue',
+      gradientBackground: 'linear-gradient(145deg, #07152B 0%, #0E2B63 50%, #174EB3 100%)',
+      glowColor: 'rgba(37, 99, 235, 0.4)',
+      badgeBg: 'rgba(37, 99, 235, 0.15)',
+      badgeText: '#60A5FA',
+      badgeBorder: 'rgba(59, 130, 246, 0.35)',
       surfaceTheme: 'light',
       websiteUrl: 'https://afrodocs.com',
-      websiteLabel: 'Visit AfroDocs Website',
+      websiteLabel: 'Explore product →',
       hotspotPosition: { left: '50%', top: '45%' },
     },
     {
@@ -435,21 +457,31 @@ export const VENTURES_CONTENT = {
       index: '02',
       name: 'Camtinel',
       tagline: 'Mobile security and SMS scam detection.',
-      category: 'Mobile Security & Fraud Prevention',
+      category: 'Cybersecurity',
       description:
-        'An intelligent mobile security application designed to protect mobile users by detecting, flagging and blocking fraudulent SMS messages and mobile money scam attempts in real time.',
+        'Intelligent security shield protecting mobile users against SMS fraud and money scams.',
       highlights: [
         'Real-time SMS scam & phishing detection',
         'Proactive protection against mobile fraud schemes',
         'Lightweight, privacy-conscious mobile security shield',
       ],
       deviceType: 'Mobile Security App',
-      cropImage: '/images/venture-camtinel.webp',
-      fullShowcaseImage: '/images/apps-showcase.webp',
-      brandAccent: '#8F1028',
+      cropImage: '/images/mockups/camtinel 1.png',
+      fullShowcaseImage: '/images/mockups/camtinel 1.png',
+      mockups: [
+        '/images/mockups/camtinel 1.png',
+        '/images/mockups/camtinel 2.png',
+      ],
+      brandAccent: '#059669',
+      productColor: 'Green',
+      gradientBackground: 'linear-gradient(145deg, #031F14 0%, #064E3B 50%, #0D7A58 100%)',
+      glowColor: 'rgba(5, 150, 105, 0.4)',
+      badgeBg: 'rgba(5, 150, 105, 0.15)',
+      badgeText: '#34D399',
+      badgeBorder: 'rgba(16, 185, 129, 0.35)',
       surfaceTheme: 'crimson',
       websiteUrl: 'https://camtinel.com',
-      websiteLabel: 'Visit Camtinel Website',
+      websiteLabel: 'Explore product →',
       hotspotPosition: { left: '75%', top: '58%' },
     },
     {
@@ -457,43 +489,68 @@ export const VENTURES_CONTENT = {
       index: '03',
       name: 'Camiv',
       tagline: 'Digital education and home tutoring.',
-      category: 'EdTech & Home Tutoring',
+      category: 'EdTech',
       description:
-        'A digital education platform connecting learners and families with qualified tutors, structured learning pathways and personalised academic support.',
+        'Connecting families with verified tutors for structured learning and academic support.',
       highlights: [
         'Curated home & digital tutoring connections',
         'Structured learning support for students',
         'Accessible educational guidance & progress tracking',
       ],
       deviceType: 'Digital Learning Platform',
-      cropImage: '/images/venture-camiv.webp',
-      fullShowcaseImage: '/images/apps-showcase.webp',
-      brandAccent: '#8F1028',
+      cropImage: '/images/mockups/camiv.png',
+      fullShowcaseImage: '/images/mockups/camiv.png',
+      mockups: [
+        '/images/mockups/camiv.png',
+        '/images/mockups/camiv 2.png',
+        '/images/mockups/Untitled design (6).png',
+      ],
+      brandAccent: '#0284C7',
+      productColor: 'Blue',
+      gradientBackground: 'linear-gradient(145deg, #041E3A 0%, #0369A1 50%, #0284C7 100%)',
+      glowColor: 'rgba(2, 132, 199, 0.4)',
+      badgeBg: 'rgba(2, 132, 199, 0.15)',
+      badgeText: '#38BDF8',
+      badgeBorder: 'rgba(14, 165, 233, 0.35)',
       surfaceTheme: 'ivory',
       websiteUrl: 'https://camiv.com',
-      websiteLabel: 'Visit Camiv Website',
+      websiteLabel: 'Explore product →',
       hotspotPosition: { left: '17%', top: '54%' },
     },
     {
-      id: 'ubatechcamp',
+      id: 'njangiva',
       index: '04',
-      name: 'UbaTechCamp',
-      tagline: 'Technology education and training.',
-      category: 'Tech Education & Talent Development',
+      name: 'Njangiva',
+      tagline: 'Savings and Njangi Planning.',
+      category: 'FinTech',
       description:
-        'A practical technology education initiative equipping aspiring developers, students and young professionals with hands-on software engineering, digital and innovation skills.',
+        'Modern financial platform to set savings goals and track collaborative Njangi cycles.',
       highlights: [
-        'Practical coding, software & digital skills training',
-        'Project-based learning & mentorship',
-        'Bridging academic study with real industry readiness',
+        'Automated savings goals & milestone tracking',
+        'Collaborative Njangi group contribution schedules',
+        'Transparent member tracking and reminders',
       ],
-      deviceType: 'Tech Training & Ecosystem',
-      cropImage: '/images/venture-ubatechcamp.webp',
-      fullShowcaseImage: '/images/apps-showcase.webp',
-      brandAccent: '#F2B824',
-      surfaceTheme: 'charcoal',
-      websiteUrl: 'https://ubatechcamp.com',
-      websiteLabel: 'Visit UbaTechCamp Website',
+      deviceType: 'Savings & Njangi Mobile App',
+      cropImage: '/images/mockups/njangiva 2.png',
+      fullShowcaseImage: '/images/mockups/njangiva 2.png',
+      mockups: [
+        '/images/mockups/njangiva 1.png',
+        '/images/mockups/njangiva 2.png',
+        '/images/mockups/njangiva 3.png',
+        '/images/mockups/njangiva 4.png',
+        '/images/mockups/njangiva 6.png',
+        '/images/mockups/njangiva 7.png',
+      ],
+      brandAccent: '#E11D48',
+      productColor: 'Red',
+      gradientBackground: 'linear-gradient(145deg, #2B0610 0%, #881337 50%, #BE123C 100%)',
+      glowColor: 'rgba(225, 29, 72, 0.4)',
+      badgeBg: 'rgba(225, 29, 72, 0.15)',
+      badgeText: '#FB7185',
+      badgeBorder: 'rgba(244, 63, 94, 0.35)',
+      surfaceTheme: 'crimson',
+      websiteUrl: 'https://njangiva.com',
+      websiteLabel: 'Explore product →',
       hotspotPosition: { left: '90%', top: '56%' },
     },
   ] as VentureItem[],
