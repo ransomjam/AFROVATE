@@ -14,21 +14,26 @@ interface StageProps {
 
 /**
  * 3D Continuous Revolving Swap Stage (Njangiva & Camiv)
- * Modeled after the Alertz 3D mockup swap style:
- * - Active center phone is prominent and slightly zoomed in (scale 1.06 -> 1.10)
- * - Flanked by left and right mockups angled inward in 3D space
- * - Smoothly and continuously revolves/swaps positions with reduced, luxurious speed:
- *   - Njangiva sweeps Right-to-Left (clockwise orbit across 6 screens)
- *   - Camiv sweeps Left-to-Right (counter-clockwise orbit across 3 screens)
+ * Modeled after the Alertz 3D mockup swap style with dramatic foreground zoom:
+ * - Active center phone is prominently zoomed in (scale 1.28 -> 1.36)
+ * - Flanked by left and right mockups angled inward in 3D space (scale 0.74, opacity 0.52)
+ * - Distinct revolving directions:
+ *   - Njangiva sweeps Right-to-Left (clockwise orbit, brisk ~2.8s pace)
+ *   - Camiv sweeps Left-to-Right (counter-clockwise orbit, melodic ~4.0s pace)
  */
 const SwapStage: React.FC<StageProps> = ({ venture }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const slidesRef = useRef<(HTMLDivElement | null)[]>([]);
 
   const isCamiv = venture.id === 'camiv';
+  // Proportional widths for prominent 3D center + background wings
   const stageWidthClass = isCamiv
-    ? 'w-[58%] sm:w-[52%] max-w-[270px]'
-    : 'w-[50%] sm:w-[46%] max-w-[220px]';
+    ? 'w-[54%] sm:w-[48%] max-w-[250px]'
+    : 'w-[48%] sm:w-[44%] max-w-[215px]';
+
+  // Distinct paces: Njangiva is faster FinTech tempo (~2.8s); Camiv is relaxed EdTech tempo (~4.0s)
+  const showcaseDur = isCamiv ? 2.6 : 1.7;
+  const swapDur = isCamiv ? 1.4 : 1.1;
 
   const total = venture.mockups.length;
 
@@ -42,23 +47,26 @@ const SwapStage: React.FC<StageProps> = ({ venture }) => {
     let activeTl: gsap.core.Timeline | null = null;
     const N = slides.length;
 
-    // Responsive horizontal offset percentage for flanking mockups
-    const xFlank = 46;
+    // Horizontal offset percentage for flanking mockups
+    const xFlank = 52;
+    const flankScale = 0.74;
+    const centerStartScale = 1.28;
+    const centerPeakScale = 1.36;
 
     // Clear any previous animations
     slides.forEach((slide) => gsap.killTweensOf(slide));
 
     // Initial setup:
-    // Slide 0: Center (front, prominent, slightly zoomed)
-    // Slide 1: Right
-    // Slide N-1 (or Slide 2 if N=3): Left
+    // Slide 0: Center (front, prominent, strongly zoomed in)
+    // Slide 1: Right (background flank)
+    // Slide N-1 (or Slide 2 if N=3): Left (background flank)
     // All others: Offstage
     slides.forEach((slide, i) => {
       if (i === 0) {
         gsap.set(slide, {
           xPercent: 0,
-          yPercent: 0,
-          scale: 1.06,
+          yPercent: -2,
+          scale: centerStartScale,
           opacity: 1,
           zIndex: 30,
           rotateY: 0,
@@ -68,30 +76,30 @@ const SwapStage: React.FC<StageProps> = ({ venture }) => {
       } else if (i === 1) {
         gsap.set(slide, {
           xPercent: xFlank,
-          yPercent: 4,
-          scale: 0.82,
-          opacity: 0.65,
+          yPercent: 6,
+          scale: flankScale,
+          opacity: 0.52,
           zIndex: 15,
-          rotateY: -10,
+          rotateY: -12,
           rotateZ: 4,
           transformOrigin: '50% 65%',
         });
       } else if (i === (N > 2 ? N - 1 : 1)) {
         gsap.set(slide, {
           xPercent: -xFlank,
-          yPercent: 4,
-          scale: 0.82,
-          opacity: 0.65,
+          yPercent: 6,
+          scale: flankScale,
+          opacity: 0.52,
           zIndex: 15,
-          rotateY: 10,
+          rotateY: 12,
           rotateZ: -4,
           transformOrigin: '50% 65%',
         });
       } else {
         gsap.set(slide, {
           xPercent: 0,
-          yPercent: 14,
-          scale: 0.68,
+          yPercent: 16,
+          scale: 0.62,
           opacity: 0,
           zIndex: 1,
           rotateY: 0,
@@ -105,10 +113,6 @@ const SwapStage: React.FC<StageProps> = ({ venture }) => {
 
     const runSwapCycle = () => {
       if (isDisposed) return;
-
-      // Reduced speed: 2.3s hold & zoom + 1.4s smooth revolving swap
-      const showcaseDur = 2.3;
-      const swapDur = 1.4;
 
       const tl = gsap.timeline({
         onComplete: () => {
@@ -130,30 +134,30 @@ const SwapStage: React.FC<StageProps> = ({ venture }) => {
         const curRight = slides[curRightIdx];
         const curLeft = slides[curLeftIdx];
 
-        // 1. Center phone breathes forward
+        // 1. Center phone breathes forward into pronounced zoom
         tl.to(curCenter, {
-          scale: 1.10,
-          yPercent: -2,
+          scale: centerPeakScale,
+          yPercent: -4,
           duration: showcaseDur,
           ease: 'power1.out',
         });
         tl.to(
           [curLeft, curRight],
           {
-            yPercent: 2,
+            yPercent: 4,
             duration: showcaseDur,
             ease: 'power1.out',
           },
           '<'
         );
 
-        // 2. Left sweeps to Center
+        // 2. Left sweeps into Center (scaling up dramatically from 0.74 to 1.28)
         tl.to(
           curLeft,
           {
             xPercent: 0,
-            yPercent: 0,
-            scale: 1.06,
+            yPercent: -2,
+            scale: centerStartScale,
             opacity: 1,
             zIndex: 30,
             rotateY: 0,
@@ -164,16 +168,16 @@ const SwapStage: React.FC<StageProps> = ({ venture }) => {
           '>'
         );
 
-        // Center sweeps to Right
+        // Center sweeps to Right (scaling down from 1.36 to 0.74)
         tl.to(
           curCenter,
           {
             xPercent: xFlank,
-            yPercent: 4,
-            scale: 0.82,
-            opacity: 0.65,
+            yPercent: 6,
+            scale: flankScale,
+            opacity: 0.52,
             zIndex: 15,
-            rotateY: -10,
+            rotateY: -12,
             rotateZ: 4,
             duration: swapDur,
             ease: 'power2.inOut',
@@ -186,11 +190,11 @@ const SwapStage: React.FC<StageProps> = ({ venture }) => {
           curRight,
           {
             xPercent: -xFlank,
-            yPercent: 4,
-            scale: 0.82,
-            opacity: 0.65,
+            yPercent: 6,
+            scale: flankScale,
+            opacity: 0.52,
             zIndex: 10,
-            rotateY: 10,
+            rotateY: 12,
             rotateZ: -4,
             duration: swapDur,
             ease: 'power2.inOut',
@@ -209,30 +213,30 @@ const SwapStage: React.FC<StageProps> = ({ venture }) => {
         const curLeft = slides[curLeftIdx];
         const nextIncoming = slides[nextIncomingIdx];
 
-        // 1. Center phone breathes forward
+        // 1. Center phone breathes forward into pronounced zoom
         tl.to(curCenter, {
-          scale: 1.10,
-          yPercent: -2,
+          scale: centerPeakScale,
+          yPercent: -4,
           duration: showcaseDur,
           ease: 'power1.out',
         });
         tl.to(
           [curLeft, curRight],
           {
-            yPercent: 2,
+            yPercent: 4,
             duration: showcaseDur,
             ease: 'power1.out',
           },
           '<'
         );
 
-        // 2. Right sweeps to Center
+        // 2. Right sweeps into Center (scaling up from 0.74 to 1.28)
         tl.to(
           curRight,
           {
             xPercent: 0,
-            yPercent: 0,
-            scale: 1.06,
+            yPercent: -2,
+            scale: centerStartScale,
             opacity: 1,
             zIndex: 30,
             rotateY: 0,
@@ -243,16 +247,16 @@ const SwapStage: React.FC<StageProps> = ({ venture }) => {
           '>'
         );
 
-        // Center sweeps to Left
+        // Center sweeps to Left (scaling down from 1.36 to 0.74)
         tl.to(
           curCenter,
           {
             xPercent: -xFlank,
-            yPercent: 4,
-            scale: 0.82,
-            opacity: 0.65,
+            yPercent: 6,
+            scale: flankScale,
+            opacity: 0.52,
             zIndex: 15,
-            rotateY: 10,
+            rotateY: 12,
             rotateZ: -4,
             duration: swapDur,
             ease: 'power2.inOut',
@@ -266,8 +270,8 @@ const SwapStage: React.FC<StageProps> = ({ venture }) => {
             curLeft,
             {
               xPercent: -xFlank * 1.35,
-              yPercent: 12,
-              scale: 0.68,
+              yPercent: 16,
+              scale: 0.62,
               opacity: 0,
               zIndex: 5,
               duration: swapDur * 0.75,
@@ -281,18 +285,18 @@ const SwapStage: React.FC<StageProps> = ({ venture }) => {
             nextIncoming,
             {
               xPercent: xFlank * 1.35,
-              yPercent: 12,
-              scale: 0.68,
+              yPercent: 16,
+              scale: 0.62,
               opacity: 0,
               zIndex: 5,
-              rotateY: -10,
+              rotateY: -12,
               rotateZ: 4,
             },
             {
               xPercent: xFlank,
-              yPercent: 4,
-              scale: 0.82,
-              opacity: 0.65,
+              yPercent: 6,
+              scale: flankScale,
+              opacity: 0.52,
               zIndex: 15,
               duration: swapDur,
               ease: 'power2.out',
@@ -310,7 +314,7 @@ const SwapStage: React.FC<StageProps> = ({ venture }) => {
       if (activeTl) activeTl.kill();
       slides.forEach((s) => gsap.killTweensOf(s));
     };
-  }, [total, isCamiv]);
+  }, [total, isCamiv, showcaseDur, swapDur]);
 
   return (
     <div
@@ -369,15 +373,14 @@ const SwapStage: React.FC<StageProps> = ({ venture }) => {
 };
 
 /**
- * Camera Close-Up & Up/Down Screen Inspection Stage (AfroDocs & Camtinel)
- * Gives the physical feeling of holding a device up to the camera lens:
- * 1. Takes the device close to the camera (scale 1.85 - 2.10).
- * 2. Waits a bit to establish focus on the screen.
- * 3. Moves the device UP and DOWN to show everything on the screen:
- *    - Down to show top header, title, and tools
- *    - Up to show the document body, workspace, and threat detection list
- * 4. Recenters and surges directly into the camera lens till it touches the camera,
- *    with the next screen seamlessly stepping up to take its turn!
+ * Camera Unidirectional Sweep Inspection Stage (AfroDocs & Camtinel)
+ * 1. Takes the device close to the camera (scale 1.95 - 2.15).
+ * 2. Pauses briefly to establish focus on the screen.
+ * 3. Unidirectional Sweep Exit:
+ *    - Sweeps UP (or DOWN) across the viewer's gaze, showcasing the entire interface,
+ *      and continues all the way through until it exits out of frame (no backtracking).
+ * 4. Concurrently, the next screen seamlessly rises into the primary slot.
+ * 5. Distinct paces: AfroDocs is measured (~3.7s); Camtinel is rapid (~2.5s).
  */
 const CameraInspectStage: React.FC<StageProps> = ({ venture }) => {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -388,10 +391,13 @@ const CameraInspectStage: React.FC<StageProps> = ({ venture }) => {
     ? 'w-[92%] sm:w-[88%] max-w-[520px]'
     : 'w-[62%] sm:w-[58%] max-w-[280px]';
 
-  const inspectScale = isAfrodocs ? 1.85 : 2.10;
-  const crashScale = isAfrodocs ? 5.5 : 5.8;
-  const panDownY = isAfrodocs ? 40 : 48; // moves down to show top of screen
-  const panUpY = isAfrodocs ? -44 : -54;  // moves up to show bottom of screen
+  const inspectScale = isAfrodocs ? 1.95 : 2.15;
+  const exitScale = inspectScale * 1.08;
+
+  // Speeds per app: AfroDocs is deliberate & thorough; Camtinel is agile & alert
+  const zoomDur = isAfrodocs ? 1.1 : 0.85;
+  const holdDur = isAfrodocs ? 0.55 : 0.35;
+  const sweepDur = isAfrodocs ? 2.0 : 1.3;
 
   const total = venture.mockups.length;
 
@@ -405,13 +411,14 @@ const CameraInspectStage: React.FC<StageProps> = ({ venture }) => {
     let activeTl: gsap.core.Timeline | null = null;
     const N = slides.length;
 
-    // Initial positioning
+    // Initial setup
     slides.forEach((slide) => gsap.killTweensOf(slide));
     slides.forEach((slide, i) => {
       if (i === 0) {
         gsap.set(slide, {
           scale: 1.0,
           y: 0,
+          yPercent: 0,
           opacity: 1,
           zIndex: 30,
           transformOrigin: '50% 65%',
@@ -420,6 +427,7 @@ const CameraInspectStage: React.FC<StageProps> = ({ venture }) => {
         gsap.set(slide, {
           scale: 0.90,
           y: 12,
+          yPercent: 0,
           opacity: 0.88,
           zIndex: 20,
           transformOrigin: '50% 65%',
@@ -428,6 +436,7 @@ const CameraInspectStage: React.FC<StageProps> = ({ venture }) => {
         gsap.set(slide, {
           scale: 0.82,
           y: 22,
+          yPercent: 0,
           opacity: 0.45,
           zIndex: 10,
           transformOrigin: '50% 65%',
@@ -436,6 +445,7 @@ const CameraInspectStage: React.FC<StageProps> = ({ venture }) => {
         gsap.set(slide, {
           scale: 0.76,
           y: 30,
+          yPercent: 0,
           opacity: 0,
           zIndex: 1,
           transformOrigin: '50% 65%',
@@ -452,6 +462,11 @@ const CameraInspectStage: React.FC<StageProps> = ({ venture }) => {
       const nxt = slides[(currentIdx + 1) % N];
       const afterNxt = N > 2 ? slides[(currentIdx + 2) % N] : null;
 
+      // Unidirectional sweep exit:
+      // Even screen sweeps UP till exit off top; Odd screen sweeps DOWN till exit off bottom
+      const isSweepUp = currentIdx % 2 === 0;
+      const exitYPercent = isSweepUp ? -145 : 145;
+
       gsap.set(cur, { zIndex: 30 });
       gsap.set(nxt, { zIndex: 20 });
       if (afterNxt) gsap.set(afterNxt, { zIndex: 10 });
@@ -460,11 +475,12 @@ const CameraInspectStage: React.FC<StageProps> = ({ venture }) => {
         onComplete: () => {
           if (isDisposed) return;
 
-          // Recycle current screen cleanly
+          // Recycle current screen cleanly to back of queue
           if (N === 2) {
             gsap.set(cur, {
               scale: 0.90,
               y: 12,
+              yPercent: 0,
               opacity: 0.88,
               zIndex: 20,
             });
@@ -472,6 +488,7 @@ const CameraInspectStage: React.FC<StageProps> = ({ venture }) => {
             gsap.set(cur, {
               scale: 0.76,
               y: 30,
+              yPercent: 0,
               opacity: 0,
               zIndex: 1,
             });
@@ -484,95 +501,63 @@ const CameraInspectStage: React.FC<StageProps> = ({ venture }) => {
 
       activeTl = tl;
 
-      // 1. Take device close to the camera (scale up for readable interface inspection)
+      // 1. Zoom close to camera
       tl.to(cur, {
         scale: inspectScale,
         y: 0,
-        duration: 1.0,
+        yPercent: 0,
+        duration: zoomDur,
         ease: 'power2.out',
       });
 
-      // 2. "Wait a bit" (hold still so viewer can examine the focused screen)
+      // 2. Brief focus hold so user can inspect the magnified interface
       tl.to(cur, {
-        y: 2,
-        duration: 0.6,
+        y: isSweepUp ? 3 : -3,
+        duration: holdDur,
         ease: 'none',
       });
 
-      // 3. Move DOWN to show what's at the top of the screen (header, title, navigation, tools)
-      tl.to(cur, {
-        y: panDownY,
-        duration: 1.3,
-        ease: 'sine.inOut',
-      });
-
-      // Brief hold at top
-      tl.to(cur, {
-        y: panDownY,
-        duration: 0.35,
-        ease: 'none',
-      });
-
-      // 4. Move UP to show what's at the bottom/body of the screen (editor workspace, threats, action controls)
-      tl.to(cur, {
-        y: panUpY,
-        duration: 1.5,
-        ease: 'sine.inOut',
-      });
-
-      // Brief hold at bottom
-      tl.to(cur, {
-        y: panUpY,
-        duration: 0.35,
-        ease: 'none',
-      });
-
-      // 5. Recenter smoothly
-      tl.to(cur, {
-        y: -6,
-        duration: 0.7,
-        ease: 'power1.out',
-      });
-
-      // 6. Camera crash zoom — plunges directly into camera lens till it touches the camera!
-      const crashDur = 0.8;
+      // 3. Unidirectional sweep: glide across camera lens and continue all the way till exit!
       tl.to(
         cur,
         {
-          scale: crashScale,
-          y: -38,
+          yPercent: exitYPercent,
+          scale: exitScale,
           opacity: 0,
-          duration: crashDur,
-          ease: 'power2.in',
+          duration: sweepDur,
+          ease: 'power1.inOut',
         },
-        `> -0.05`
+        '>'
       );
 
-      // 7. Concurrently, next mockup seamlessly rises into primary position
+      // 4. Concurrently, next screen rises into primary position
+      const nxtEntryDelay = sweepDur * 0.45;
       tl.to(
         nxt,
         {
           scale: 1.0,
           y: 0,
+          yPercent: 0,
           opacity: 1,
-          duration: crashDur,
+          duration: sweepDur * 0.65,
           ease: 'power2.out',
         },
-        `<`
+        `<+=${nxtEntryDelay}`
       );
 
-      // 8. If N > 2, slide after next steps to ready position underneath
+      // 5. If N > 2, slide after next steps to ready position underneath
       if (afterNxt && N > 2) {
         tl.to(
           afterNxt,
           {
             scale: 0.90,
             y: 12,
+            yPercent: 0,
             opacity: 0.88,
-            duration: crashDur,
+            duration: sweepDur * 0.65,
             ease: 'power2.out',
           },
-          `<`
+          '<'
         );
       }
     };
@@ -584,7 +569,7 @@ const CameraInspectStage: React.FC<StageProps> = ({ venture }) => {
       if (activeTl) activeTl.kill();
       slides.forEach((s) => gsap.killTweensOf(s));
     };
-  }, [total, isAfrodocs]);
+  }, [total, isAfrodocs, zoomDur, holdDur, sweepDur, inspectScale, exitScale]);
 
   return (
     <div
