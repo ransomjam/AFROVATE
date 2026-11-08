@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { VENTURES_CONTENT, VentureItem } from '../../data/siteContent';
 import { gsap, prefersReducedMotion } from '../../utils/animations';
 
@@ -18,217 +18,245 @@ interface ProductCrashConfig {
 const PRODUCT_CRASH_CONFIGS: Record<string, ProductCrashConfig> = {
   afrodocs: {
     // Wide horizontal stage for laptop document editor screens
-    stageWidthClass: 'w-[90%] sm:w-[88%] max-w-[500px] lg:max-w-[530px]',
-    glanceScale: 1.22,
-    crashScale: 6.2,
-    // Slower, majestic pace to study the document workspace; speed varies dynamically in between
-    durations: [2.5, 1.8, 1.4, 2.2, 1.6, 2.0, 1.5],
+    stageWidthClass: 'w-[92%] sm:w-[88%] max-w-[520px]',
+    glanceScale: 1.18,
+    crashScale: 5.6,
+    // Variable speeds in between: alternating reading glance and workflow switch
+    durations: [2.5, 1.7, 1.4, 2.2, 1.5, 2.0, 1.6],
   },
   camtinel: {
     stageWidthClass: 'w-[62%] sm:w-[58%] max-w-[280px]',
-    glanceScale: 1.24,
-    crashScale: 6.0,
+    glanceScale: 1.20,
+    crashScale: 5.8,
     // Rapid, vigilant mobile security pace
     durations: [1.7, 1.2],
   },
   camiv: {
-    stageWidthClass: 'w-[76%] sm:w-[72%] max-w-[400px]',
-    glanceScale: 1.22,
-    crashScale: 6.0,
-    // Rhythmic, friendly EdTech pace
+    stageWidthClass: 'w-[78%] sm:w-[74%] max-w-[410px]',
+    glanceScale: 1.18,
+    crashScale: 5.6,
+    // Flowing educational tempo
     durations: [2.2, 1.5, 1.9],
   },
   njangiva: {
     // Mobile financial screens in sharp portrait view
     stageWidthClass: 'w-[58%] sm:w-[54%] max-w-[260px]',
-    glanceScale: 1.24,
-    crashScale: 6.0,
-    // Energetic, syncopated financial pace across all 6 screens
+    glanceScale: 1.22,
+    crashScale: 5.8,
+    // Dynamic, syncopated financial pace across all 6 screens
     durations: [1.8, 1.3, 2.0, 1.4, 1.7, 1.5],
   },
 };
 
 interface CameraCrashStageProps {
   venture: VentureItem;
-  isHovered: boolean;
 }
 
 /**
- * Native GSAP Camera-Touch Crash Zoom Stage
- * Runs on a continuous GPU-accelerated GSAP timeline with zero glitch and zero pause:
- * Each screen glides forward in sharp focus, and then accelerates directly toward
- * the camera lens (scale 6.0x) until it touches the camera lens and plunges through,
- * with the incoming screen seamlessly taking over with varying speeds and distinct paces.
+ * High-Performance Camera-Touch Crash Zoom Stage
+ * Runs continuously with zero glitch, zero pause, and zero freeze:
+ * 1. Screen glides forward in sharp focus (glance).
+ * 2. Accelerates directly toward the camera lens until it touches the camera (crashScale 5.6x-5.8x).
+ * 3. The incoming screen rises seamlessly to take over with zero wait time.
+ * 4. Distinct variable speeds between apps and in between individual screens.
  */
-const CameraCrashStage: React.FC<CameraCrashStageProps> = ({
-  venture,
-  isHovered,
-}) => {
+const CameraCrashStage: React.FC<CameraCrashStageProps> = ({ venture }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const slidesRef = useRef<(HTMLDivElement | null)[]>([]);
-  const timelineRef = useRef<gsap.core.Timeline | null>(null);
 
   const config: ProductCrashConfig = PRODUCT_CRASH_CONFIGS[venture.id] || {
     stageWidthClass: 'w-[60%] sm:w-[54%] max-w-[280px]',
-    glanceScale: 1.24,
-    crashScale: 6.0,
+    glanceScale: 1.20,
+    crashScale: 5.8,
     durations: [2.0, 1.6],
   };
 
   const total = venture.mockups.length;
 
-  // Build the continuous, glitch-free, pause-free GSAP timeline
   useEffect(() => {
     if (prefersReducedMotion() || total <= 1 || !containerRef.current) return;
 
-    const ctx = gsap.context(() => {
-      const slides = slidesRef.current.filter(Boolean) as HTMLDivElement[];
-      if (slides.length < 2) return;
+    const slides = slidesRef.current.filter(Boolean) as HTMLDivElement[];
+    if (slides.length < 2) return;
 
-      const N = slides.length;
-      const durations = config.durations;
+    let isDisposed = false;
+    let activeTl: gsap.core.Timeline | null = null;
+    const N = slides.length;
+    const durations = config.durations;
 
-      // Initial positions:
-      // Slide 0 in front (scale 1.0, opacity 1, zIndex 30)
-      // Slide 1 ready underneath (scale 0.90, opacity 1, zIndex 20)
-      // All other slides cued behind (scale 0.85, opacity 0, zIndex 1)
-      slides.forEach((slide, i) => {
-        if (i === 0) {
-          gsap.set(slide, {
-            scale: 1.0,
-            y: 0,
-            opacity: 1,
-            zIndex: 30,
-            transformOrigin: 'bottom center',
-          });
-        } else if (i === 1) {
-          gsap.set(slide, {
-            scale: 0.90,
-            y: 12,
-            opacity: 1,
-            zIndex: 20,
-            transformOrigin: 'bottom center',
-          });
-        } else {
-          gsap.set(slide, {
-            scale: 0.85,
-            y: 20,
-            opacity: 0,
-            zIndex: 1,
-            transformOrigin: 'bottom center',
-          });
-        }
+    // Initialize all slides with clean initial stacking & positioning
+    slides.forEach((slide, i) => {
+      gsap.killTweensOf(slide);
+      if (i === 0) {
+        gsap.set(slide, {
+          scale: 1.0,
+          y: 0,
+          opacity: 1,
+          zIndex: 30,
+          transformOrigin: '50% 65%',
+        });
+      } else if (i === 1) {
+        gsap.set(slide, {
+          scale: 0.90,
+          y: 12,
+          opacity: 0.88,
+          zIndex: 20,
+          transformOrigin: '50% 65%',
+        });
+      } else if (i === 2 && N > 2) {
+        gsap.set(slide, {
+          scale: 0.82,
+          y: 22,
+          opacity: 0.45,
+          zIndex: 10,
+          transformOrigin: '50% 65%',
+        });
+      } else {
+        gsap.set(slide, {
+          scale: 0.76,
+          y: 30,
+          opacity: 0,
+          zIndex: 1,
+          transformOrigin: '50% 65%',
+        });
+      }
+    });
+
+    let currentIdx = 0;
+
+    const playNextTransition = () => {
+      if (isDisposed) return;
+
+      const dur = durations[currentIdx % durations.length];
+      const glanceDur = dur * 0.64;
+      const crashDur = dur * 0.36;
+
+      const cur = slides[currentIdx];
+      const nxt = slides[(currentIdx + 1) % N];
+      const afterNxt = N > 2 ? slides[(currentIdx + 2) % N] : null;
+      const futureNxt = N > 3 ? slides[(currentIdx + 3) % N] : null;
+
+      // Maintain zIndex hierarchy
+      gsap.set(cur, { zIndex: 30 });
+      gsap.set(nxt, { zIndex: 20 });
+      if (afterNxt) gsap.set(afterNxt, { zIndex: 10 });
+
+      const tl = gsap.timeline({
+        onComplete: () => {
+          if (isDisposed) return;
+
+          // Recycle cur to back position cleanly
+          if (N === 2) {
+            gsap.set(cur, {
+              scale: 0.90,
+              y: 12,
+              opacity: 0.88,
+              zIndex: 20,
+            });
+          } else {
+            gsap.set(cur, {
+              scale: 0.76,
+              y: 30,
+              opacity: 0,
+              zIndex: 1,
+            });
+          }
+
+          // Advance index and trigger next transition with ZERO wait time!
+          currentIdx = (currentIdx + 1) % N;
+          playNextTransition();
+        },
       });
 
-      const tl = gsap.timeline({ repeat: -1 });
+      activeTl = tl;
 
-      for (let i = 0; i < N; i++) {
-        const cur = slides[i];
-        const nxt = slides[(i + 1) % N];
-        const afterNxt = slides[(i + 2) % N];
-        const dur = durations[i % durations.length];
+      // 1. Phase A: Glance forward in sharp focus
+      tl.to(cur, {
+        scale: config.glanceScale,
+        y: -10,
+        duration: glanceDur,
+        ease: 'power1.out',
+      });
 
-        // 1. Glance duration: user inspects and reads the interface
-        const glanceDur = dur * 0.72;
-        // 2. Crash duration: high-velocity dive into the camera lens
-        const crashDur = dur * 0.28;
+      // 2. Phase B: Camera Crash — surges directly toward camera lens until it touches the camera!
+      tl.to(
+        cur,
+        {
+          scale: config.crashScale,
+          y: -36,
+          opacity: 0,
+          duration: crashDur,
+          ease: 'power2.in',
+        },
+        `> -${crashDur * 0.1}`
+      );
 
-        // Step A: Glance forward in high focus
-        tl.to(cur, {
-          scale: config.glanceScale,
-          y: -12,
-          duration: glanceDur,
-          ease: 'power1.out',
-        });
+      // 3. Concurrently, next mockup rises into front position (no gap, unbroken motion)
+      tl.to(
+        nxt,
+        {
+          scale: 1.0,
+          y: 0,
+          opacity: 1,
+          duration: crashDur,
+          ease: 'power2.out',
+        },
+        `<`
+      );
 
-        // Step B: Crash Zoom — rushes directly into camera lens till it touches the camera!
+      // 4. Slide after next steps into ready position underneath
+      if (afterNxt && N > 2) {
         tl.to(
-          cur,
+          afterNxt,
           {
-            scale: config.crashScale,
-            y: -40,
-            opacity: 0,
-            duration: crashDur,
-            ease: 'expo.in',
-          },
-          `> -${crashDur * 0.08}`
-        );
-
-        // Step C: Concurrently, next slide rises seamlessly into the front position (ZERO PAUSE!)
-        tl.to(
-          nxt,
-          {
-            scale: 1.0,
-            y: 0,
-            opacity: 1,
-            zIndex: 30,
+            scale: 0.90,
+            y: 12,
+            opacity: 0.88,
             duration: crashDur,
             ease: 'power2.out',
           },
           `<`
         );
-
-        // Step D: Cue up the slide after next beneath
-        if (N > 2) {
-          tl.set(
-            afterNxt,
-            {
-              scale: 0.90,
-              y: 12,
-              opacity: 1,
-              zIndex: 20,
-            },
-            `<`
-          );
-        } else {
-          // Dual slide alternating reset
-          tl.set(
-            cur,
-            {
-              scale: 0.90,
-              y: 12,
-              opacity: 1,
-              zIndex: 20,
-            },
-            `>`
-          );
-        }
-
-        // Step E: Reset cur behind stage once flown past
-        if (N > 2) {
-          tl.set(
-            cur,
-            {
-              scale: 0.85,
-              y: 20,
-              opacity: 0,
-              zIndex: 1,
-            },
-            `>`
-          );
-        }
       }
 
-      timelineRef.current = tl;
-    }, containerRef);
+      // 5. Pre-stage future slide in queue
+      if (futureNxt && N > 3) {
+        tl.fromTo(
+          futureNxt,
+          {
+            scale: 0.76,
+            y: 30,
+            opacity: 0,
+            zIndex: 10,
+          },
+          {
+            scale: 0.82,
+            y: 22,
+            opacity: 0.45,
+            duration: crashDur,
+            ease: 'power1.out',
+          },
+          `<`
+        );
+      }
+    };
 
-    return () => ctx.revert();
+    // Kick off continuous animation loop
+    playNextTransition();
+
+    return () => {
+      isDisposed = true;
+      if (activeTl) {
+        activeTl.kill();
+      }
+      slides.forEach((s) => gsap.killTweensOf(s));
+    };
   }, [total, config]);
-
-  // Pause on hover so the user can inspect any screen closely without jumping
-  useEffect(() => {
-    if (!timelineRef.current) return;
-    if (isHovered) {
-      timelineRef.current.pause();
-    } else {
-      timelineRef.current.play();
-    }
-  }, [isHovered]);
 
   return (
     <div
       ref={containerRef}
-      className="relative w-full h-[360px] sm:h-[400px] lg:h-[430px] overflow-hidden rounded-t-[28px] sm:rounded-t-[34px] select-none flex items-end justify-center"
+      className="relative w-full h-[360px] sm:h-[400px] lg:h-[430px] overflow-hidden rounded-t-[28px] sm:rounded-t-[34px] select-none flex items-end justify-center pointer-events-none"
       style={{
         background: venture.gradientBackground,
         perspective: '1200px',
@@ -258,21 +286,23 @@ const CameraCrashStage: React.FC<CameraCrashStageProps> = ({
       <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/35 to-transparent pointer-events-none z-30" />
 
       {/* ========================================================================= */}
-      {/* 2. GLITCH-FREE, PAUSE-FREE CONTINUOUS CAMERA DIVE-THROUGH */}
+      {/* 2. GLITCH-FREE, FREEZE-FREE CONTINUOUS CAMERA DIVE-THROUGH */}
       {/* ========================================================================= */}
-      <div className="relative w-full h-full flex items-end justify-center px-4 pb-3 sm:pb-4 overflow-hidden">
+      <div className="relative w-full h-full flex items-end justify-center px-4 pb-3 sm:pb-4 overflow-hidden pointer-events-none">
         {venture.mockups.map((mockupUrl, idx) => (
           <div
             key={mockupUrl}
             ref={(el) => {
               slidesRef.current[idx] = el;
             }}
-            className={`absolute bottom-0 h-[88%] sm:h-[90%] ${config.stageWidthClass} flex items-end justify-center pointer-events-auto`}
+            className={`absolute bottom-0 h-[88%] sm:h-[90%] ${config.stageWidthClass} flex items-end justify-center pointer-events-none`}
+            style={{ willChange: 'transform, opacity' }}
           >
             <img
               src={encodeURI(mockupUrl)}
               alt={`${venture.name} interface view ${idx + 1}`}
-              loading="lazy"
+              loading="eager"
+              decoding="async"
               className="w-full h-auto max-h-full object-contain pointer-events-none drop-shadow-[0_25px_50px_rgba(0,0,0,0.85)]"
             />
           </div>
@@ -288,19 +318,15 @@ interface VentureCardProps {
 }
 
 const VentureCard: React.FC<VentureCardProps> = ({ venture }) => {
-  const [isHovered, setIsHovered] = useState<boolean>(false);
-
   return (
     <article
       className="venture-card group relative bg-gradient-to-b from-[#280814]/95 via-[#1E0810]/95 to-[#15060C] rounded-[28px] sm:rounded-[34px] border border-[#590A1C]/75 hover:border-[#F2B824]/60 shadow-[0_20px_55px_rgba(0,0,0,0.65)] hover:shadow-[0_25px_65px_rgba(143,16,40,0.35)] overflow-hidden transition-all duration-500 flex flex-col justify-between hover:-translate-y-2"
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
     >
       {/* Top Gold Shimmer */}
       <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#F2B824]/30 to-transparent pointer-events-none" />
 
       {/* 1. Large Top Visual Stage with Smooth Camera Crash Zoom */}
-      <CameraCrashStage venture={venture} isHovered={isHovered} />
+      <CameraCrashStage venture={venture} />
 
       {/* 2. Refined Bottom Content: Less Text, More Beauty */}
       <div className="p-6 sm:p-8 flex flex-col justify-between flex-1">
