@@ -8,68 +8,27 @@ interface VenturesSectionProps {
   onOpenInquiry?: (topic?: string) => void;
 }
 
-interface ProductCrashConfig {
-  stageWidthClass: string;
-  glanceScale: number;
-  crashScale: number;
-  durations: number[]; // Variable speeds between screens
-}
-
-const PRODUCT_CRASH_CONFIGS: Record<string, ProductCrashConfig> = {
-  afrodocs: {
-    // Wide horizontal stage for laptop document editor screens
-    stageWidthClass: 'w-[92%] sm:w-[88%] max-w-[520px]',
-    glanceScale: 1.18,
-    crashScale: 5.6,
-    // Variable speeds in between: alternating reading glance and workflow switch
-    durations: [2.5, 1.7, 1.4, 2.2, 1.5, 2.0, 1.6],
-  },
-  camtinel: {
-    stageWidthClass: 'w-[62%] sm:w-[58%] max-w-[280px]',
-    glanceScale: 1.20,
-    crashScale: 5.8,
-    // Rapid, vigilant mobile security pace
-    durations: [1.7, 1.2],
-  },
-  camiv: {
-    stageWidthClass: 'w-[78%] sm:w-[74%] max-w-[410px]',
-    glanceScale: 1.18,
-    crashScale: 5.6,
-    // Flowing educational tempo
-    durations: [2.2, 1.5, 1.9],
-  },
-  njangiva: {
-    // Mobile financial screens in sharp portrait view
-    stageWidthClass: 'w-[58%] sm:w-[54%] max-w-[260px]',
-    glanceScale: 1.22,
-    crashScale: 5.8,
-    // Dynamic, syncopated financial pace across all 6 screens
-    durations: [1.8, 1.3, 2.0, 1.4, 1.7, 1.5],
-  },
-};
-
-interface CameraCrashStageProps {
+interface StageProps {
   venture: VentureItem;
 }
 
 /**
- * High-Performance Camera-Touch Crash Zoom Stage
- * Runs continuously with zero glitch, zero pause, and zero freeze:
- * 1. Screen glides forward in sharp focus (glance).
- * 2. Accelerates directly toward the camera lens until it touches the camera (crashScale 5.6x-5.8x).
- * 3. The incoming screen rises seamlessly to take over with zero wait time.
- * 4. Distinct variable speeds between apps and in between individual screens.
+ * 3D Continuous Revolving Swap Stage (Njangiva & Camiv)
+ * Modeled after the Alertz 3D mockup swap style:
+ * - Active center phone is prominent and slightly zoomed in (scale 1.06 -> 1.10)
+ * - Flanked by left and right mockups angled inward in 3D space
+ * - Smoothly and continuously revolves/swaps positions with reduced, luxurious speed:
+ *   - Njangiva sweeps Right-to-Left (clockwise orbit across 6 screens)
+ *   - Camiv sweeps Left-to-Right (counter-clockwise orbit across 3 screens)
  */
-const CameraCrashStage: React.FC<CameraCrashStageProps> = ({ venture }) => {
+const SwapStage: React.FC<StageProps> = ({ venture }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const slidesRef = useRef<(HTMLDivElement | null)[]>([]);
 
-  const config: ProductCrashConfig = PRODUCT_CRASH_CONFIGS[venture.id] || {
-    stageWidthClass: 'w-[60%] sm:w-[54%] max-w-[280px]',
-    glanceScale: 1.20,
-    crashScale: 5.8,
-    durations: [2.0, 1.6],
-  };
+  const isCamiv = venture.id === 'camiv';
+  const stageWidthClass = isCamiv
+    ? 'w-[58%] sm:w-[52%] max-w-[270px]'
+    : 'w-[50%] sm:w-[46%] max-w-[220px]';
 
   const total = venture.mockups.length;
 
@@ -82,11 +41,373 @@ const CameraCrashStage: React.FC<CameraCrashStageProps> = ({ venture }) => {
     let isDisposed = false;
     let activeTl: gsap.core.Timeline | null = null;
     const N = slides.length;
-    const durations = config.durations;
 
-    // Initialize all slides with clean initial stacking & positioning
+    // Responsive horizontal offset percentage for flanking mockups
+    const xFlank = 46;
+
+    // Clear any previous animations
+    slides.forEach((slide) => gsap.killTweensOf(slide));
+
+    // Initial setup:
+    // Slide 0: Center (front, prominent, slightly zoomed)
+    // Slide 1: Right
+    // Slide N-1 (or Slide 2 if N=3): Left
+    // All others: Offstage
     slides.forEach((slide, i) => {
-      gsap.killTweensOf(slide);
+      if (i === 0) {
+        gsap.set(slide, {
+          xPercent: 0,
+          yPercent: 0,
+          scale: 1.06,
+          opacity: 1,
+          zIndex: 30,
+          rotateY: 0,
+          rotateZ: 0,
+          transformOrigin: '50% 65%',
+        });
+      } else if (i === 1) {
+        gsap.set(slide, {
+          xPercent: xFlank,
+          yPercent: 4,
+          scale: 0.82,
+          opacity: 0.65,
+          zIndex: 15,
+          rotateY: -10,
+          rotateZ: 4,
+          transformOrigin: '50% 65%',
+        });
+      } else if (i === (N > 2 ? N - 1 : 1)) {
+        gsap.set(slide, {
+          xPercent: -xFlank,
+          yPercent: 4,
+          scale: 0.82,
+          opacity: 0.65,
+          zIndex: 15,
+          rotateY: 10,
+          rotateZ: -4,
+          transformOrigin: '50% 65%',
+        });
+      } else {
+        gsap.set(slide, {
+          xPercent: 0,
+          yPercent: 14,
+          scale: 0.68,
+          opacity: 0,
+          zIndex: 1,
+          rotateY: 0,
+          rotateZ: 0,
+          transformOrigin: '50% 65%',
+        });
+      }
+    });
+
+    let currentIdx = 0;
+
+    const runSwapCycle = () => {
+      if (isDisposed) return;
+
+      // Reduced speed: 2.3s hold & zoom + 1.4s smooth revolving swap
+      const showcaseDur = 2.3;
+      const swapDur = 1.4;
+
+      const tl = gsap.timeline({
+        onComplete: () => {
+          if (isDisposed) return;
+          currentIdx = (currentIdx + 1) % N;
+          runSwapCycle();
+        },
+      });
+
+      activeTl = tl;
+
+      if (isCamiv && N === 3) {
+        // Camiv: 3 mockups revolving Left-to-Right
+        const curCenterIdx = currentIdx % 3;
+        const curRightIdx = (currentIdx + 1) % 3;
+        const curLeftIdx = (currentIdx + 2) % 3;
+
+        const curCenter = slides[curCenterIdx];
+        const curRight = slides[curRightIdx];
+        const curLeft = slides[curLeftIdx];
+
+        // 1. Center phone breathes forward
+        tl.to(curCenter, {
+          scale: 1.10,
+          yPercent: -2,
+          duration: showcaseDur,
+          ease: 'power1.out',
+        });
+        tl.to(
+          [curLeft, curRight],
+          {
+            yPercent: 2,
+            duration: showcaseDur,
+            ease: 'power1.out',
+          },
+          '<'
+        );
+
+        // 2. Left sweeps to Center
+        tl.to(
+          curLeft,
+          {
+            xPercent: 0,
+            yPercent: 0,
+            scale: 1.06,
+            opacity: 1,
+            zIndex: 30,
+            rotateY: 0,
+            rotateZ: 0,
+            duration: swapDur,
+            ease: 'power2.inOut',
+          },
+          '>'
+        );
+
+        // Center sweeps to Right
+        tl.to(
+          curCenter,
+          {
+            xPercent: xFlank,
+            yPercent: 4,
+            scale: 0.82,
+            opacity: 0.65,
+            zIndex: 15,
+            rotateY: -10,
+            rotateZ: 4,
+            duration: swapDur,
+            ease: 'power2.inOut',
+          },
+          '<'
+        );
+
+        // Right sweeps behind to Left
+        tl.to(
+          curRight,
+          {
+            xPercent: -xFlank,
+            yPercent: 4,
+            scale: 0.82,
+            opacity: 0.65,
+            zIndex: 10,
+            rotateY: 10,
+            rotateZ: -4,
+            duration: swapDur,
+            ease: 'power2.inOut',
+          },
+          '<'
+        );
+      } else {
+        // Njangiva (or general N >= 3): Revolving Right-to-Left
+        const curCenterIdx = currentIdx % N;
+        const curRightIdx = (currentIdx + 1) % N;
+        const curLeftIdx = (currentIdx - 1 + N) % N;
+        const nextIncomingIdx = (currentIdx + 2) % N;
+
+        const curCenter = slides[curCenterIdx];
+        const curRight = slides[curRightIdx];
+        const curLeft = slides[curLeftIdx];
+        const nextIncoming = slides[nextIncomingIdx];
+
+        // 1. Center phone breathes forward
+        tl.to(curCenter, {
+          scale: 1.10,
+          yPercent: -2,
+          duration: showcaseDur,
+          ease: 'power1.out',
+        });
+        tl.to(
+          [curLeft, curRight],
+          {
+            yPercent: 2,
+            duration: showcaseDur,
+            ease: 'power1.out',
+          },
+          '<'
+        );
+
+        // 2. Right sweeps to Center
+        tl.to(
+          curRight,
+          {
+            xPercent: 0,
+            yPercent: 0,
+            scale: 1.06,
+            opacity: 1,
+            zIndex: 30,
+            rotateY: 0,
+            rotateZ: 0,
+            duration: swapDur,
+            ease: 'power2.inOut',
+          },
+          '>'
+        );
+
+        // Center sweeps to Left
+        tl.to(
+          curCenter,
+          {
+            xPercent: -xFlank,
+            yPercent: 4,
+            scale: 0.82,
+            opacity: 0.65,
+            zIndex: 15,
+            rotateY: 10,
+            rotateZ: -4,
+            duration: swapDur,
+            ease: 'power2.inOut',
+          },
+          '<'
+        );
+
+        if (N > 3) {
+          // CurLeft recedes into queue
+          tl.to(
+            curLeft,
+            {
+              xPercent: -xFlank * 1.35,
+              yPercent: 12,
+              scale: 0.68,
+              opacity: 0,
+              zIndex: 5,
+              duration: swapDur * 0.75,
+              ease: 'power2.in',
+            },
+            '<'
+          );
+
+          // Next incoming enters into Right position
+          tl.fromTo(
+            nextIncoming,
+            {
+              xPercent: xFlank * 1.35,
+              yPercent: 12,
+              scale: 0.68,
+              opacity: 0,
+              zIndex: 5,
+              rotateY: -10,
+              rotateZ: 4,
+            },
+            {
+              xPercent: xFlank,
+              yPercent: 4,
+              scale: 0.82,
+              opacity: 0.65,
+              zIndex: 15,
+              duration: swapDur,
+              ease: 'power2.out',
+            },
+            '<'
+          );
+        }
+      }
+    };
+
+    runSwapCycle();
+
+    return () => {
+      isDisposed = true;
+      if (activeTl) activeTl.kill();
+      slides.forEach((s) => gsap.killTweensOf(s));
+    };
+  }, [total, isCamiv]);
+
+  return (
+    <div
+      ref={containerRef}
+      className="relative w-full h-[360px] sm:h-[400px] lg:h-[430px] overflow-hidden rounded-t-[28px] sm:rounded-t-[34px] select-none flex items-end justify-center pointer-events-none"
+      style={{
+        background: venture.gradientBackground,
+        perspective: '1200px',
+      }}
+    >
+      {/* Living Ambient Drift Light Beam */}
+      <div
+        className="absolute inset-0 pointer-events-none animate-ambient-drift opacity-60 mix-blend-screen"
+        style={{
+          background: `radial-gradient(circle at 50% 25%, ${venture.glowColor} 0%, transparent 70%)`,
+        }}
+      />
+
+      {/* Living Concentric Radar Ripples */}
+      <div className="absolute inset-0 pointer-events-none flex items-center justify-center overflow-hidden">
+        <div className="absolute -bottom-28 w-[660px] h-[660px] rounded-full border border-white/[0.08] bg-white/[0.02] animate-concentric-4 pointer-events-none" />
+        <div className="absolute -bottom-22 w-[520px] h-[520px] rounded-full border border-white/[0.12] bg-white/[0.04] animate-concentric-3 pointer-events-none" />
+        <div className="absolute -bottom-16 w-[400px] h-[400px] rounded-full border border-white/[0.16] bg-white/[0.06] animate-concentric-2 pointer-events-none" />
+        <div className="absolute -bottom-10 w-[280px] h-[280px] rounded-full border border-white/[0.22] bg-white/[0.08] animate-concentric-1 pointer-events-none" />
+      </div>
+
+      {/* Top Shimmer Line */}
+      <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/35 to-transparent pointer-events-none z-30" />
+
+      {/* 3D Mockup Container */}
+      <div className="relative w-full h-full flex items-end justify-center px-4 pb-3 sm:pb-4 overflow-hidden pointer-events-none">
+        {venture.mockups.map((mockupUrl, idx) => (
+          <div
+            key={mockupUrl}
+            ref={(el) => {
+              slidesRef.current[idx] = el;
+            }}
+            className={`absolute bottom-0 h-[86%] sm:h-[88%] ${stageWidthClass} flex items-end justify-center pointer-events-none`}
+            style={{
+              willChange: 'transform, opacity',
+              transformStyle: 'preserve-3d',
+            }}
+          >
+            <img
+              src={encodeURI(mockupUrl)}
+              alt={`${venture.name} interface view ${idx + 1}`}
+              loading="eager"
+              decoding="async"
+              className="w-full h-auto max-h-full object-contain pointer-events-none drop-shadow-[0_25px_50px_rgba(0,0,0,0.85)]"
+            />
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+/**
+ * Camera Close-Up & Up/Down Screen Inspection Stage (AfroDocs & Camtinel)
+ * Gives the physical feeling of holding a device up to the camera lens:
+ * 1. Takes the device close to the camera (scale 1.85 - 2.10).
+ * 2. Waits a bit to establish focus on the screen.
+ * 3. Moves the device UP and DOWN to show everything on the screen:
+ *    - Down to show top header, title, and tools
+ *    - Up to show the document body, workspace, and threat detection list
+ * 4. Recenters and surges directly into the camera lens till it touches the camera,
+ *    with the next screen seamlessly stepping up to take its turn!
+ */
+const CameraInspectStage: React.FC<StageProps> = ({ venture }) => {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const slidesRef = useRef<(HTMLDivElement | null)[]>([]);
+
+  const isAfrodocs = venture.id === 'afrodocs';
+  const stageWidthClass = isAfrodocs
+    ? 'w-[92%] sm:w-[88%] max-w-[520px]'
+    : 'w-[62%] sm:w-[58%] max-w-[280px]';
+
+  const inspectScale = isAfrodocs ? 1.85 : 2.10;
+  const crashScale = isAfrodocs ? 5.5 : 5.8;
+  const panDownY = isAfrodocs ? 40 : 48; // moves down to show top of screen
+  const panUpY = isAfrodocs ? -44 : -54;  // moves up to show bottom of screen
+
+  const total = venture.mockups.length;
+
+  useEffect(() => {
+    if (prefersReducedMotion() || total <= 1 || !containerRef.current) return;
+
+    const slides = slidesRef.current.filter(Boolean) as HTMLDivElement[];
+    if (slides.length < 2) return;
+
+    let isDisposed = false;
+    let activeTl: gsap.core.Timeline | null = null;
+    const N = slides.length;
+
+    // Initial positioning
+    slides.forEach((slide) => gsap.killTweensOf(slide));
+    slides.forEach((slide, i) => {
       if (i === 0) {
         gsap.set(slide, {
           scale: 1.0,
@@ -124,19 +445,13 @@ const CameraCrashStage: React.FC<CameraCrashStageProps> = ({ venture }) => {
 
     let currentIdx = 0;
 
-    const playNextTransition = () => {
+    const playInspectCycle = () => {
       if (isDisposed) return;
-
-      const dur = durations[currentIdx % durations.length];
-      const glanceDur = dur * 0.64;
-      const crashDur = dur * 0.36;
 
       const cur = slides[currentIdx];
       const nxt = slides[(currentIdx + 1) % N];
       const afterNxt = N > 2 ? slides[(currentIdx + 2) % N] : null;
-      const futureNxt = N > 3 ? slides[(currentIdx + 3) % N] : null;
 
-      // Maintain zIndex hierarchy
       gsap.set(cur, { zIndex: 30 });
       gsap.set(nxt, { zIndex: 20 });
       if (afterNxt) gsap.set(afterNxt, { zIndex: 10 });
@@ -145,7 +460,7 @@ const CameraCrashStage: React.FC<CameraCrashStageProps> = ({ venture }) => {
         onComplete: () => {
           if (isDisposed) return;
 
-          // Recycle cur to back position cleanly
+          // Recycle current screen cleanly
           if (N === 2) {
             gsap.set(cur, {
               scale: 0.90,
@@ -162,36 +477,78 @@ const CameraCrashStage: React.FC<CameraCrashStageProps> = ({ venture }) => {
             });
           }
 
-          // Advance index and trigger next transition with ZERO wait time!
           currentIdx = (currentIdx + 1) % N;
-          playNextTransition();
+          playInspectCycle();
         },
       });
 
       activeTl = tl;
 
-      // 1. Phase A: Glance forward in sharp focus
+      // 1. Take device close to the camera (scale up for readable interface inspection)
       tl.to(cur, {
-        scale: config.glanceScale,
-        y: -10,
-        duration: glanceDur,
+        scale: inspectScale,
+        y: 0,
+        duration: 1.0,
+        ease: 'power2.out',
+      });
+
+      // 2. "Wait a bit" (hold still so viewer can examine the focused screen)
+      tl.to(cur, {
+        y: 2,
+        duration: 0.6,
+        ease: 'none',
+      });
+
+      // 3. Move DOWN to show what's at the top of the screen (header, title, navigation, tools)
+      tl.to(cur, {
+        y: panDownY,
+        duration: 1.3,
+        ease: 'sine.inOut',
+      });
+
+      // Brief hold at top
+      tl.to(cur, {
+        y: panDownY,
+        duration: 0.35,
+        ease: 'none',
+      });
+
+      // 4. Move UP to show what's at the bottom/body of the screen (editor workspace, threats, action controls)
+      tl.to(cur, {
+        y: panUpY,
+        duration: 1.5,
+        ease: 'sine.inOut',
+      });
+
+      // Brief hold at bottom
+      tl.to(cur, {
+        y: panUpY,
+        duration: 0.35,
+        ease: 'none',
+      });
+
+      // 5. Recenter smoothly
+      tl.to(cur, {
+        y: -6,
+        duration: 0.7,
         ease: 'power1.out',
       });
 
-      // 2. Phase B: Camera Crash — surges directly toward camera lens until it touches the camera!
+      // 6. Camera crash zoom — plunges directly into camera lens till it touches the camera!
+      const crashDur = 0.8;
       tl.to(
         cur,
         {
-          scale: config.crashScale,
-          y: -36,
+          scale: crashScale,
+          y: -38,
           opacity: 0,
           duration: crashDur,
           ease: 'power2.in',
         },
-        `> -${crashDur * 0.1}`
+        `> -0.05`
       );
 
-      // 3. Concurrently, next mockup rises into front position (no gap, unbroken motion)
+      // 7. Concurrently, next mockup seamlessly rises into primary position
       tl.to(
         nxt,
         {
@@ -204,7 +561,7 @@ const CameraCrashStage: React.FC<CameraCrashStageProps> = ({ venture }) => {
         `<`
       );
 
-      // 4. Slide after next steps into ready position underneath
+      // 8. If N > 2, slide after next steps to ready position underneath
       if (afterNxt && N > 2) {
         tl.to(
           afterNxt,
@@ -218,40 +575,16 @@ const CameraCrashStage: React.FC<CameraCrashStageProps> = ({ venture }) => {
           `<`
         );
       }
-
-      // 5. Pre-stage future slide in queue
-      if (futureNxt && N > 3) {
-        tl.fromTo(
-          futureNxt,
-          {
-            scale: 0.76,
-            y: 30,
-            opacity: 0,
-            zIndex: 10,
-          },
-          {
-            scale: 0.82,
-            y: 22,
-            opacity: 0.45,
-            duration: crashDur,
-            ease: 'power1.out',
-          },
-          `<`
-        );
-      }
     };
 
-    // Kick off continuous animation loop
-    playNextTransition();
+    playInspectCycle();
 
     return () => {
       isDisposed = true;
-      if (activeTl) {
-        activeTl.kill();
-      }
+      if (activeTl) activeTl.kill();
       slides.forEach((s) => gsap.killTweensOf(s));
     };
-  }, [total, config]);
+  }, [total, isAfrodocs]);
 
   return (
     <div
@@ -262,10 +595,6 @@ const CameraCrashStage: React.FC<CameraCrashStageProps> = ({ venture }) => {
         perspective: '1200px',
       }}
     >
-      {/* ========================================================================= */}
-      {/* 1. LIVING ANIMATED BACKGROUND IN MOTION */}
-      {/* ========================================================================= */}
-
       {/* Moving Ambient Radial Light Beam */}
       <div
         className="absolute inset-0 pointer-events-none animate-ambient-drift opacity-60 mix-blend-screen"
@@ -285,9 +614,7 @@ const CameraCrashStage: React.FC<CameraCrashStageProps> = ({ venture }) => {
       {/* Top Shimmer Line */}
       <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/35 to-transparent pointer-events-none z-30" />
 
-      {/* ========================================================================= */}
-      {/* 2. GLITCH-FREE, FREEZE-FREE CONTINUOUS CAMERA DIVE-THROUGH */}
-      {/* ========================================================================= */}
+      {/* Camera Dive & Inspect Container */}
       <div className="relative w-full h-full flex items-end justify-center px-4 pb-3 sm:pb-4 overflow-hidden pointer-events-none">
         {venture.mockups.map((mockupUrl, idx) => (
           <div
@@ -295,7 +622,7 @@ const CameraCrashStage: React.FC<CameraCrashStageProps> = ({ venture }) => {
             ref={(el) => {
               slidesRef.current[idx] = el;
             }}
-            className={`absolute bottom-0 h-[88%] sm:h-[90%] ${config.stageWidthClass} flex items-end justify-center pointer-events-none`}
+            className={`absolute bottom-0 h-[88%] sm:h-[90%] ${stageWidthClass} flex items-end justify-center pointer-events-none`}
             style={{ willChange: 'transform, opacity' }}
           >
             <img
@@ -325,8 +652,12 @@ const VentureCard: React.FC<VentureCardProps> = ({ venture }) => {
       {/* Top Gold Shimmer */}
       <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-[#F2B824]/30 to-transparent pointer-events-none" />
 
-      {/* 1. Large Top Visual Stage with Smooth Camera Crash Zoom */}
-      <CameraCrashStage venture={venture} />
+      {/* 1. Large Top Visual Stage: 3D Revolving Swap Stage (Njangiva & Camiv) or Camera Inspect Stage (AfroDocs & Camtinel) */}
+      {venture.id === 'njangiva' || venture.id === 'camiv' ? (
+        <SwapStage venture={venture} />
+      ) : (
+        <CameraInspectStage venture={venture} />
+      )}
 
       {/* 2. Refined Bottom Content: Less Text, More Beauty */}
       <div className="p-6 sm:p-8 flex flex-col justify-between flex-1">
