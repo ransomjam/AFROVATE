@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { SITE_CONFIG } from '../../data/siteContent';
-import { AfrovateLogo } from './AfrovateLogo';
+import { Scale54Logo } from './Scale54Logo';
 import { MagneticButton } from './MagneticButton';
 
 interface InquiryModalProps {
@@ -102,7 +102,7 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({
   const handleServiceSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     // Real submission handler hook for backend integration
-    console.log('[Afrovate Service Inquiry]', {
+    console.log('[Scale54 Service Inquiry]', {
       name,
       organisation,
       email,
@@ -117,7 +117,7 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({
   const handleVentureSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     // Real venture application submission handler hook for backend integration
-    console.log('[Afrovate Venture Studio Application]', {
+    console.log('[Scale54 Venture Studio Application]', {
       founderName,
       contact: { email: founderEmail, phone: founderPhone },
       ventureName,
@@ -160,7 +160,7 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({
           {/* Header Bar */}
           <div className="flex items-start justify-between gap-4 pb-5 border-b border-[#F8F5EF]/10">
             <div>
-              <AfrovateLogo variant="light" size="sm" />
+              <Scale54Logo variant="light" size="sm" />
               <h3
                 id="inquiry-modal-title"
                 className="mt-3 font-display font-extrabold text-2xl sm:text-3xl text-[#FFFFFF]"
@@ -169,7 +169,7 @@ export const InquiryModal: React.FC<InquiryModalProps> = ({
               </h3>
               <p className="mt-1 text-xs sm:text-sm text-[#F8F5EF]/75">
                 {formMode === 'venture'
-                  ? 'Submit your business idea or technology venture for Afrovate Studio evaluation.'
+                  ? 'Submit your business idea or technology venture for Scale54 Studio evaluation.'
                   : 'Tell us about your consulting, software development or marketing requirements.'}
               </p>
             </div>

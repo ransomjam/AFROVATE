@@ -88,8 +88,8 @@ export interface TeamDiscipline {
 }
 
 export const SITE_CONFIG = {
-  companyName: 'AFROVATE GROUP',
-  shortName: 'Afrovate',
+  companyName: 'SCALE54',
+  shortName: 'Scale54',
   identity: 'Venture Studio, Technology and Business Development Group.',
   navigation: [
     { label: 'Home', href: '#hero' },
@@ -101,17 +101,17 @@ export const SITE_CONFIG = {
     { label: 'Contact', href: '#contact' },
   ],
   contactPlaceholders: {
-    generalEmail: 'contact@afrovate.com (Configurable Placeholder)',
-    partnershipsEmail: 'partnerships@afrovate.com (Configurable Placeholder)',
+    generalEmail: 'contact@scale54.com (Configurable Placeholder)',
+    partnershipsEmail: 'partnerships@scale54.com (Configurable Placeholder)',
     phone: '[Company Phone / WhatsApp Placeholder]',
     location: 'Remote-First Operations • Serving Regional & International Markets',
     officeNote: 'Official headquarters & regional office details configurable upon deployment.',
   },
   socialLinks: [
-    { label: 'LinkedIn', href: '#contact', handle: '@afrovategroup' },
-    { label: 'X (Twitter)', href: '#contact', handle: '@afrovate' },
-    { label: 'Instagram', href: '#contact', handle: '@afrovategroup' },
-    { label: 'Facebook', href: '#contact', handle: '/afrovategroup' },
+    { label: 'LinkedIn', href: '#contact', handle: '@scale54' },
+    { label: 'X (Twitter)', href: '#contact', handle: '@scale54' },
+    { label: 'Instagram', href: '#contact', handle: '@scale54' },
+    { label: 'Facebook', href: '#contact', handle: '/scale54' },
   ],
 };
 
@@ -155,10 +155,10 @@ export const HERO_CONTENT = {
 };
 
 export const ABOUT_CONTENT = {
-  eyebrow: 'ABOUT AFROVATE',
+  eyebrow: 'ABOUT SCALE54',
   headline: 'A collaborative group helping entrepreneurs and organisations grow.',
   description:
-    'Whether you are taking your first steps with an early-stage startup idea or scaling an established business, Afrovate brings together venture co-creation, software engineering and commercial development to help you move forward with clarity.',
+    'Whether you are taking your first steps with an early-stage startup idea or scaling an established business, Scale54 brings together venture co-creation, software engineering and commercial development to help you move forward with clarity.',
   extendedNarrative:
     'We work as an active partner beside founders and organisations, contributing practical business guidance, modern software development and hands-on execution.',
   divisions: [
@@ -169,9 +169,9 @@ export const ABOUT_CONTENT = {
       description:
         'Turn your venture idea into an operational business with a committed partner contributing seed capital, software engineering, branding and go-to-market execution.',
       image: '/images/team-collaboration.webp',
-      imageAlt: 'Afrovate team collaborating with founders on startup venture creation',
+      imageAlt: 'Scale54 team collaborating with founders on startup venture creation',
       href: '#venture-studio',
-      topic: 'About Afrovate — Venture Building (Co-Building Startups)',
+      topic: 'About Scale54 — Venture Building (Co-Building Startups)',
     },
     {
       number: '02',
@@ -182,18 +182,18 @@ export const ABOUT_CONTENT = {
       image: '/images/developer-work.webp',
       imageAlt: 'Software engineering team and technical consultants building digital solutions',
       href: '#services',
-      topic: 'About Afrovate — Technology & Services (Solutions for Organisations)',
+      topic: 'About Scale54 — Technology & Services (Solutions for Organisations)',
     },
     {
       number: '03',
       title: 'Portfolio Support',
       headline: 'Long-Term Partnership',
       description:
-        'Benefit from shared technical infrastructure, continuous product maintenance and strategic business development across the Afrovate ecosystem.',
+        'Benefit from shared technical infrastructure, continuous product maintenance and strategic business development across the Scale54 ecosystem.',
       image: '/images/apps-showcase.webp',
-      imageAlt: 'Afrovate portfolio ecosystem platforms and continuous technical maintenance',
+      imageAlt: 'Scale54 portfolio ecosystem platforms and continuous technical maintenance',
       href: '#ventures',
-      topic: 'About Afrovate — Portfolio Support (Long-Term Partnership)',
+      topic: 'About Scale54 — Portfolio Support (Long-Term Partnership)',
     },
   ] as AboutDivisionItem[],
   focusItems: [
@@ -413,7 +413,7 @@ export const VENTURES_CONTENT = {
   eyebrow: 'OUR VENTURES',
   headline: 'Products built for authentic needs.',
   supportingText:
-    'Explore independent digital products and platforms engineered within the Afrovate ecosystem.',
+    'Explore independent digital products and platforms engineered within the Scale54 ecosystem.',
   ventures: [
     {
       id: 'afrodocs',
@@ -707,7 +707,7 @@ export const HOW_WE_WORK_CONTENT = {
         title: 'Scale & Lead',
         description: 'You lead your company, backed by ongoing portfolio support.',
         detail:
-          'You lead daily operations as founder while Afrovate provides strategic advisory, technical maintenance and ecosystem support.',
+          'You lead daily operations as founder while Scale54 provides strategic advisory, technical maintenance and ecosystem support.',
       },
     ] as ProcessStep[],
   },
@@ -717,7 +717,7 @@ export const TEAM_NETWORK_CONTENT = {
   eyebrow: 'OUR TEAM AND NETWORK',
   headline: 'Specialist talent assembled around your needs.',
   supportingText:
-    'Afrovate operates as a coordinated network of experienced professionals. This shared model ensures that whether you are co-building a venture or hiring us for a project, you get direct access to the right expertise without unnecessary agency overhead.',
+    'Scale54 operates as a coordinated network of experienced professionals. This shared model ensures that whether you are co-building a venture or hiring us for a project, you get direct access to the right expertise without unnecessary agency overhead.',
   functions: [
     { title: 'Software engineers', role: 'Full-stack web, mobile, cloud infrastructure and secure architecture.' },
     { title: 'Business consultants', role: 'Commercial strategy, feasibility studies, pricing and operational growth.' },
@@ -757,7 +757,7 @@ export const FINAL_CTA_CONTENT = {
       id: 'partner',
       label: 'For Partners',
       title: 'Explore Collaboration',
-      description: 'Discuss strategic, distribution or ecosystem partnerships with Afrovate Group.',
+      description: 'Discuss strategic, distribution or ecosystem partnerships with Scale54.',
       action: 'Discuss Partnership',
       topic: 'Strategic Partnership',
     },

@@ -115,7 +115,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
         >
           <img
             src="/images/hero-corporate-tower.webp"
-            alt="Afrovate architectural corporate building with glowing interior lights"
+            alt="Scale54 architectural corporate building with glowing interior lights"
             className="w-full h-full object-cover object-right-top select-none pointer-events-none"
           />
         </div>

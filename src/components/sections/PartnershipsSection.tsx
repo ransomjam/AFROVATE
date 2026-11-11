@@ -96,7 +96,7 @@ export const PartnershipsSection: React.FC<PartnershipsSectionProps> = ({
                   src="/images/strategy-meeting.webp"
                   srcSet="/images/strategy-meeting-mobile.webp 800w, /images/strategy-meeting.webp 1600w"
                   sizes="(max-width: 1024px) 100vw, 45vw"
-                  alt="Afrovate executives and partners collaborating around a laptop"
+                  alt="Scale54 executives and partners collaborating around a laptop"
                   loading="lazy"
                   className="w-full h-full object-cover scale-110 photo-warm-grade"
                 />
@@ -116,7 +116,7 @@ export const PartnershipsSection: React.FC<PartnershipsSectionProps> = ({
                     </p>
                   </div>
                   <span className="w-10 h-10 rounded-xl bg-[#F2B824] text-[#21191D] font-display font-extrabold text-sm flex items-center justify-center shrink-0">
-                    AG
+                    S54
                   </span>
                 </div>
               </div>
@@ -135,7 +135,7 @@ export const PartnershipsSection: React.FC<PartnershipsSectionProps> = ({
 
               <h2 className="partner-head-reveal font-display font-extrabold text-3xl sm:text-5xl xl:text-[56px] leading-[1.05] tracking-tight text-[#FFFFFF]">
                 Grow your business with{' '}
-                <span className="italic text-[#F2B824]">Afrovate.</span>
+                <span className="italic text-[#F2B824]">Scale54.</span>
               </h2>
 
               <p className="partner-head-reveal mt-5 text-base sm:text-lg text-[#F8F5EF]/85 leading-relaxed max-w-2xl">

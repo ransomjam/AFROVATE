@@ -3,7 +3,7 @@ import {
   SITE_CONFIG,
   VENTURES_CONTENT,
 } from '../../data/siteContent';
-import { AfrovateLogo } from '../ui/AfrovateLogo';
+import { Scale54Logo } from '../ui/Scale54Logo';
 
 interface FooterProps {
   onNavigate: (href: string) => void;
@@ -37,11 +37,11 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenInquiry }) => 
       <div className="relative z-10 max-w-[1400px] mx-auto px-5 sm:px-8 lg:px-12 pt-16 pb-12">
         {/* Main Multi-Column Footer Architecture */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8 lg:gap-6 pb-14 border-b border-[#F8F5EF]/12">
-          {/* Column 1 (4 cols): Afrovate Group Introduction & Social Links */}
+          {/* Column 1 (4 cols): Scale54 Introduction & Social Links */}
           <div className="lg:col-span-4 pr-0 lg:pr-6">
-            <AfrovateLogo variant="light" size="md" />
+            <Scale54Logo variant="light" size="md" />
             <p className="mt-5 text-sm text-[#F8F5EF]/80 leading-relaxed">
-              Afrovate Group is a venture studio, technology and business development group.
+              Scale54 is a venture studio, technology and business development group.
               We partner with founders to co-build new technology businesses, manage a portfolio
               of proprietary ventures, and deliver consulting, digital marketing, software
               engineering and AI automation services to organisations.
@@ -50,7 +50,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenInquiry }) => 
             {/* Social Media Links */}
             <div className="mt-6">
               <div className="text-[11px] font-extrabold uppercase tracking-[0.22em] text-[#F2B824] mb-3">
-                Connect With Afrovate
+                Connect With Scale54
               </div>
               <div className="flex flex-wrap gap-2.5">
                 {SITE_CONFIG.socialLinks.map((social) => (
@@ -79,7 +79,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenInquiry }) => 
                   onClick={(e) => handleAnchor(e, '#about')}
                   className="text-[#F8F5EF]/75 hover:text-[#F2B824] transition-colors"
                 >
-                  About Afrovate
+                  About Scale54
                 </a>
               </li>
               <li>
@@ -321,7 +321,7 @@ export const Footer: React.FC<FooterProps> = ({ onNavigate, onOpenInquiry }) => 
             </h4>
             <p className="text-xs sm:text-sm text-[#F8F5EF]/80 leading-relaxed">
               {infoModal === 'careers'
-                ? 'Afrovate operates as a remote-first, coordinated network of technology, creative and business specialists. We welcome high-calibre professionals to contribute across our ventures and client engagements.'
+                ? 'Scale54 operates as a remote-first, coordinated network of technology, creative and business specialists. We welcome high-calibre professionals to contribute across our ventures and client engagements.'
                 : 'Official legal terms, privacy compliance and client engagement documentation are maintained and configured according to jurisdiction upon deployment.'}
             </p>
             <div className="mt-6 flex justify-end">

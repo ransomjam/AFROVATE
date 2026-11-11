@@ -780,7 +780,7 @@ export const VenturesSection: React.FC<VenturesSectionProps> = () => {
       </div>
 
       <div className="relative z-10 max-w-[1440px] mx-auto px-5 sm:px-8 lg:px-12">
-        {/* Section Header: Matching Afrovate Signature Section Heading */}
+        {/* Section Header: Matching Scale54 Signature Section Heading */}
         <div ref={headerRef} className="max-w-3xl mb-12 lg:mb-16">
           <div className="ventures-reveal-item inline-flex items-center gap-2.5 mb-3.5">
             <span className="w-5 h-[2px] bg-[#F2B824] rounded-full" />

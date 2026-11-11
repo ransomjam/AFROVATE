@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { FINAL_CTA_CONTENT } from '../../data/siteContent';
 import { gsap, prefersReducedMotion } from '../../utils/animations';
-import { AfrovateLogo } from '../ui/AfrovateLogo';
+import { Scale54Logo } from '../ui/Scale54Logo';
 import { MagneticButton } from '../ui/MagneticButton';
 
 interface FinalCtaSectionProps {
@@ -73,7 +73,7 @@ export const FinalCtaSection: React.FC<FinalCtaSectionProps> = ({
             src="/images/downtown-skyline.webp"
             srcSet="/images/downtown-skyline-mobile.webp 800w, /images/downtown-skyline.webp 1600w"
             sizes="(max-width: 1024px) 100vw, 62vw"
-            alt="Afrovate Group golden hour corporate skyline"
+            alt="Scale54 golden hour corporate skyline"
             loading="lazy"
             className="w-full h-full object-cover object-right photo-warm-grade"
           />
@@ -110,9 +110,9 @@ export const FinalCtaSection: React.FC<FinalCtaSectionProps> = ({
 
       <div className="relative z-10 w-full max-w-[1400px] mx-auto px-5 sm:px-8 lg:px-12">
         <div ref={contentWrapRef} className="max-w-4xl">
-          {/* Afrovate Wordmark */}
+          {/* Scale54 Wordmark */}
           <div className="cta-reveal-item mb-6">
-            <AfrovateLogo variant="light" size="md" />
+            <Scale54Logo variant="light" size="md" />
           </div>
 
           {/* Eyebrow */}

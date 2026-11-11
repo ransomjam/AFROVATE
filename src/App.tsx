@@ -164,7 +164,7 @@ export const App: React.FC = () => {
         {/* SECTION 3 — OUR SERVICES (DIVISION 02) */}
         <ServicesSection onOpenInquiry={handleOpenInquiry} />
 
-        {/* SECTION 3 — ABOUT AFROVATE (WELL SUMMARIZED) */}
+        {/* SECTION 3 — ABOUT SCALE54 (WELL SUMMARIZED) */}
         <AboutSection
           onNavigate={handleNavigate}
           onOpenInquiry={handleOpenInquiry}

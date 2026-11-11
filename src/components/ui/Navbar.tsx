@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { SITE_CONFIG, SERVICES_CONTENT, VENTURES_CONTENT } from '../../data/siteContent';
-import { AfrovateLogo } from './AfrovateLogo';
+import { Scale54Logo } from './Scale54Logo';
 import { MagneticButton } from './MagneticButton';
 
 interface NavbarProps {
@@ -75,9 +75,9 @@ export const Navbar: React.FC<NavbarProps> = ({
             href="#hero"
             onClick={(e) => handleLinkClick(e, '#hero')}
             className="focus:outline-none focus-visible:ring-2 focus-visible:ring-[#F2B824] rounded-lg"
-            aria-label="Afrovate Group Home"
+            aria-label="Scale54 Home"
           >
-            <AfrovateLogo variant={logoVariant} size="md" />
+            <Scale54Logo variant={logoVariant} size="md" />
           </a>
 
           {/* Desktop Navigation */}
@@ -320,7 +320,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 onOpenInquiry('Mobile Navigation Inquiry');
               }}
             >
-              Work With Afrovate
+              Work With Scale54
             </MagneticButton>
           </div>
         </div>

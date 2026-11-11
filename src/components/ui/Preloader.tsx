@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { gsap, prefersReducedMotion } from '../../utils/animations';
-import { AfrovateLogo } from './AfrovateLogo';
+import { Scale54Logo } from './Scale54Logo';
 
 interface PreloaderProps {
   onComplete: () => void;
@@ -118,7 +118,7 @@ export const Preloader: React.FC<PreloaderProps> = ({ onComplete }) => {
           }}
         />
         <div ref={logoWrapRef} className="relative z-10 flex flex-col items-center">
-          <AfrovateLogo variant="light" size="lg" />
+          <Scale54Logo variant="light" size="lg" />
           <div className="mt-6 w-48 h-[2px] bg-[#590A1C] overflow-hidden rounded-full">
             <div
               ref={goldBarRef}
